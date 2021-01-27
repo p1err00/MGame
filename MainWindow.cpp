@@ -101,7 +101,8 @@ void MainWindow::saveGame(Game *game){
         QJsonArray array = QJsonDocument::fromJson(file.fileName().toUtf8()).array();
         array.append(jsonObject);
         qDebug()<< array;
-        QJsonDocument doc(array);
+        QJsonDocument doc;
+        doc.setArray(array);
         file.write(doc.toJson());
 
     file.close();
@@ -121,8 +122,13 @@ void MainWindow::loadGame(){
 
         QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
 
-        QJsonObject jsonObject = doc.object();
-        QJsonArray array = jsonObject.value("").toArray();
+        QJsonArray array = doc.array();
+
+        QJsonObject json;
+        for()
+        json.value("name").toString();
+
+        qDebug() << array;
 
         foreach (const QJsonValue & val, array) {
             QString valDoc;
