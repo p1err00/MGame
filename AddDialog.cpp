@@ -40,11 +40,11 @@ Game AddDialog::on_pushButton_clicked()
 
     mw->listGame.append(*game);
 
-    qDebug()<< "Game loading";
-    mw->loadGame();
-
     qDebug()<< "Save game \n";
     mw->saveGame(game);
+
+    qDebug()<< "Game loading";
+    mw->loadGame();
 
     return *game;
 }

@@ -19,15 +19,6 @@ public:
     QString date() const;
     long timePlayed() const;
 
-    QDataStream& deserialize(QDataStream& inStream){
-        inStream << name();
-        inStream << directory();
-        inStream << path();
-        inStream << date();
-        inStream << QString::number(timePlayed());
-        return inStream;
-    }
-
 private:
     long _timePlayed;
     QString _name;

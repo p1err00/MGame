@@ -13,6 +13,7 @@
 #include <QDialog>
 #include <QProcess>
 #include <QJsonObject>
+#include <QJsonArray>
 
 
 QT_BEGIN_NAMESPACE
@@ -36,25 +37,17 @@ public:
 
     void loadGame();
 
-
 private slots:
 
     void on_pbAdd_clicked();
 
     void on_pbDel_clicked();
 
-    void processFinished(int code , QProcess::ExitStatus status, QDateTime dateTimeStart);
-
     void closeEvent(QCloseEvent *event);
 
     void launchGame(Game *game);
 
-    void gameStop();
-
-    void on_pbSave_clicked();
-
     void on_pbLoad_clicked();
-
 
 private:
 
@@ -65,12 +58,9 @@ private:
     QVBoxLayout *layout = new QVBoxLayout;
     QPushButton *launch;
     QJsonObject m_currentJsonObject;
-    Game *selectGame;
-
+    QString selectGame;
 
 public slots:
-
-    void list(Game *game);
 
 };
 #endif // MAINWINDOW_H
