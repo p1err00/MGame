@@ -45,9 +45,9 @@ private slots:
 
     void closeEvent(QCloseEvent *event);
 
-    void launchGame(Game *game);
-
     void on_pbLoad_clicked();
+
+    void on_pbLaunch_clicked(Game game);
 
 private:
 

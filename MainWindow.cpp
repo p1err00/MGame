@@ -55,9 +55,7 @@ void MainWindow::on_pbAdd_clicked()
 
 void MainWindow::on_pbDel_clicked()
 {
-
-
-
+    //listGame.removeOne(selectGame);
 }
 
 
@@ -129,24 +127,6 @@ void MainWindow::loadGame(){
     file.close();
 
 }
-void MainWindow::launchGame(Game *game){
-
-    //init timer & process
-    QDateTime *dateTimeStart = new QDateTime;
-    QProcess *process = new QProcess;
-    QProcess *cmdProcess = new QProcess;
-
-    process->startDetached("cmd /c start "+game->path());
-    process->waitForFinished();
-
-    //process->execute("cmd /c start "+game->path());
-
-
-    dateTimeStart->currentDateTime().toString();
-    qDebug() << "Timer start : " + dateTimeStart->currentDateTime().toString();
-
-}
-
 
 void MainWindow::on_pbLoad_clicked()
 {
@@ -159,13 +139,17 @@ void MainWindow::on_pbLoad_clicked()
     QVBoxLayout *layout = new QVBoxLayout;
     layout->destroyed(layout->widget());
 
+    QPushButton *btnLaunch = new QPushButton("Launch");
+
     for(Game item : listGame){
 
         QPushButton *pbLaunch = new QPushButton;
+        ui->launchLayout->removeWidget(pbLaunch);
 
         pbLaunch->setText(item.name());
         pbLaunch->setFixedSize(300, 30);
 
+        //Create button connexion for each object in my file
         connect(pbLaunch, &QPushButton::clicked, [=](){
 
             //Insert name game into selectGame
@@ -177,15 +161,35 @@ void MainWindow::on_pbLoad_clicked()
             ui->lTimePlayed->setText(QString::number(item.timePlayed()));
             ui->lDateInstall->setText(item.date());
 
-            QPushButton *btnLaunch = new QPushButton("Launch");
-            connect(btnLaunch, &QPushButton::clicked, [=](){
-
-            });
-
         });
 
         layout->addWidget(pbLaunch);
+
+        //add launch button
+        ui->launchLayout->addWidget(btnLaunch);
+
+        connect(btnLaunch, &QPushButton::clicked, [=](){
+            on_pbLaunch_clicked(item);
+
+        });
+        ui->verticalLayout_2->removeWidget(btnLaunch);
     }
     ui->listGameLayout->addLayout(layout);
+
+}
+
+void MainWindow::on_pbLaunch_clicked(Game game)
+{
+    qDebug() << "Launch game";
+
+    //init timer & process
+    QDateTime *dateTimeStart = new QDateTime;
+    QProcess *process = new QProcess;
+    QProcess *cmdProcess = new QProcess;
+
+    process->startDetached("cmd /c start "+game.path());
+
+    dateTimeStart->currentDateTime().toString();
+    qDebug() << "Timer start : " + dateTimeStart->currentDateTime().toString();
 
 }
