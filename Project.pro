@@ -19,6 +19,7 @@ SOURCES += \
     AddDialog.cpp \
     Game.cpp \
     MainWindowInterface.cpp \
+    Thread.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -26,7 +27,8 @@ HEADERS += \
     AddDialog.h \
     Game.h \
     MainWindow.h \
-    MainWindowInterface.h
+    MainWindowInterface.h \
+    Thread.h
 
 FORMS += \
     AddDialog.ui \

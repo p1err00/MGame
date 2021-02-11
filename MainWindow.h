@@ -29,7 +29,7 @@ public:
 
     Ui::MainWindow *ui;
 
-    QList<Game> listGame;
+    QList<Game*> listGame;
 
     ~MainWindow();
 
@@ -43,11 +43,9 @@ private slots:
 
     void on_pbDel_clicked();
 
-    void closeEvent(QCloseEvent *event);
-
     void on_pbLoad_clicked();
 
-    void on_pbLaunch_clicked(Game game);
+    void pbLaunchClicked(Game *game);
 
 private:
 
@@ -58,9 +56,12 @@ private:
     QVBoxLayout *layout = new QVBoxLayout;
     QPushButton *launch;
     QJsonObject m_currentJsonObject;
-    QString selectGame;
+    Game *selectGame;
+
+    void displayGame(Game *game);
 
 public slots:
 
+    void finishProgram();
 };
 #endif // MAINWINDOW_H

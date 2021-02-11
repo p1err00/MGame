@@ -38,7 +38,7 @@ Game AddDialog::on_pushButton_clicked()
 
     MainWindow *mw = new MainWindow;
 
-    mw->listGame.append(*game);
+    mw->listGame.append(game);
 
     qDebug()<< "Save game \n";
     mw->saveGame(game);

@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "AddDialog.h"
+#include "Thread.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -27,6 +28,7 @@
 #include <QByteArray>
 
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -39,12 +41,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::closeEvent(QCloseEvent *event){
-
-    closeEvent(event);
-    //saveGame();
-}
-
 void MainWindow::on_pbAdd_clicked()
 {
 
@@ -55,10 +51,19 @@ void MainWindow::on_pbAdd_clicked()
 
 void MainWindow::on_pbDel_clicked()
 {
-    //listGame.removeOne(selectGame);
+    /*
+    qDebug() << selectGame;
+    for (int i = 0; i<listGame.size(); i++) {
+        qDebug() << "for";
+        qDebug() << listGame.takeAt(i)->name();
+        if(listGame.takeAt(i)->name() == selectGame){
+            qDebug() << "if";
+
+            listGame.removeAt(i);
+        }
+    }
+    */
 }
-
-
 
 void MainWindow::saveGame(Game *game){
 
@@ -121,7 +126,7 @@ void MainWindow::loadGame(){
         int timePLayed = json.value("timePlayed").toInt();
         Game *game = new Game(name, directory, path, date, timePLayed);
 
-        listGame.append(*game);
+        listGame.append(game);
 
     }
     file.close();
@@ -130,66 +135,90 @@ void MainWindow::loadGame(){
 
 void MainWindow::on_pbLoad_clicked()
 {
+
+    qDeleteAll(ui->listGameLayout->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
     listGame.clear();
 
     loadGame();
 
-    qDeleteAll(ui->listGameLayout->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
-
     QVBoxLayout *layout = new QVBoxLayout;
     layout->destroyed(layout->widget());
 
-    QPushButton *btnLaunch = new QPushButton("Launch");
+    QPushButton *pbDisplay;
 
-    for(Game item : listGame){
+    for(Game *item : listGame){
 
-        QPushButton *pbLaunch = new QPushButton;
-        ui->launchLayout->removeWidget(pbLaunch);
+        pbDisplay = new QPushButton;
+        ui->launchLayout->removeWidget(pbDisplay);
 
-        pbLaunch->setText(item.name());
-        pbLaunch->setFixedSize(300, 30);
+        pbDisplay->setText(item->name());
+        pbDisplay->setFixedSize(300, 30);
+
+        layout->addWidget(pbDisplay);
 
         //Create button connexion for each object in my file
-        connect(pbLaunch, &QPushButton::clicked, [=](){
+        connect(pbDisplay, &QPushButton::clicked, [=](){
 
             //Insert name game into selectGame
-            selectGame = item.name();
+            selectGame = item;
+            qDebug() << item->name();
 
-            //Insert value into dashboard
-            ui->lName->setText(item.name());
-            ui->lDirectory->setText(item.directory());
-            ui->lTimePlayed->setText(QString::number(item.timePlayed()));
-            ui->lDateInstall->setText(item.date());
-
+            displayGame(selectGame);
         });
 
-        layout->addWidget(pbLaunch);
-
-        //add launch button
-        ui->launchLayout->addWidget(btnLaunch);
-
-        connect(btnLaunch, &QPushButton::clicked, [=](){
-            on_pbLaunch_clicked(item);
-
-        });
-        ui->verticalLayout_2->removeWidget(btnLaunch);
     }
     ui->listGameLayout->addLayout(layout);
+}
+
+void MainWindow::displayGame(Game *game){
+
+    //Clear all game's info
+    qDeleteAll(ui->verticalLayout_2->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
+
+    QPushButton *btn;
+
+    //add launch button
+    btn = new QPushButton("launch");
+
+
+    ui->verticalLayout_2->addWidget(btn);
+    //Insert value into dashboard
+    ui->lName->setText(game->name());
+    ui->lDirectory->setText(game->directory());
+    ui->lTimePlayed->setText(QString::number(game->timePlayed()));
+    ui->lDateInstall->setText(game->date());
+
+    //Set the current game
+    selectGame = game;
+
+    connect(btn, &QPushButton::clicked, [=](){
+        qDebug() << selectGame->path();
+        pbLaunchClicked(game);
+    });
 
 }
 
-void MainWindow::on_pbLaunch_clicked(Game game)
-{
-    qDebug() << "Launch game";
+void MainWindow::pbLaunchClicked(Game *game){
 
-    //init timer & process
-    QDateTime *dateTimeStart = new QDateTime;
     QProcess *process = new QProcess;
-    QProcess *cmdProcess = new QProcess;
+    QStringList arguments;
+    arguments << "start /c" << game->path();
+    qDebug() << arguments;
+    QString program = "cmd.exe";
+    QThread *thread = new QThread;
+    process->startDetached(program, arguments);
+    process->moveToThread(thread);
+    thread->start();
+    qDebug() << QThread::currentThreadId();
+    connect(thread, SIGNAL(finished()), this, SLOT(finishProgram()));
 
-    process->startDetached("cmd /c start "+game.path());
+    if(thread->isFinished()){
+        qDebug() << "Finish";
+    }
 
-    dateTimeStart->currentDateTime().toString();
-    qDebug() << "Timer start : " + dateTimeStart->currentDateTime().toString();
+}
 
+void MainWindow::finishProgram(){
+
+    qDebug() << "Ca marche";
 }
