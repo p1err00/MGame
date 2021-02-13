@@ -37,6 +37,12 @@ public:
 
     void loadGame();
 
+    Game *selectGame;
+
+    QTime start;
+
+    QTime stop;
+
 private slots:
 
     void on_pbAdd_clicked();
@@ -55,13 +61,16 @@ private:
     QPushButton *pbOpen;
     QVBoxLayout *layout = new QVBoxLayout;
     QPushButton *launch;
-    QJsonObject m_currentJsonObject;
-    Game *selectGame;
+    QJsonObject m_currentJsonObject; 
 
     void displayGame(Game *game);
+
+    int calculateTime();
 
 public slots:
 
     void finishProgram();
+
+    void startProgram();
 };
 #endif // MAINWINDOW_H

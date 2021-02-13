@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 #include "AddDialog.h"
 #include "Thread.h"
+#include "MyThread.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    on_pbLoad_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -161,8 +163,6 @@ void MainWindow::on_pbLoad_clicked()
 
             //Insert name game into selectGame
             selectGame = item;
-            qDebug() << item->name();
-
             displayGame(selectGame);
         });
 
@@ -171,17 +171,18 @@ void MainWindow::on_pbLoad_clicked()
 }
 
 void MainWindow::displayGame(Game *game){
-
     //Clear all game's info
-    qDeleteAll(ui->verticalLayout_2->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
+    qDeleteAll(ui->verticalLayout_2->findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly));
 
-    QPushButton *btn;
+    QPushButton *btn = new QPushButton;
 
     //add launch button
-    btn = new QPushButton("launch");
+
+    btn->setText("launch");
 
 
     ui->verticalLayout_2->addWidget(btn);
+
     //Insert value into dashboard
     ui->lName->setText(game->name());
     ui->lDirectory->setText(game->directory());
@@ -200,25 +201,49 @@ void MainWindow::displayGame(Game *game){
 
 void MainWindow::pbLaunchClicked(Game *game){
 
-    QProcess *process = new QProcess;
+    QString program = game->path();
+
+    QProcess *process = new QProcess();
     QStringList arguments;
-    arguments << "start /c" << game->path();
+
+    arguments << "start /c";
+
     qDebug() << arguments;
-    QString program = "cmd.exe";
-    QThread *thread = new QThread;
-    process->startDetached(program, arguments);
+    qDebug() << program;
+
+    MyThread *thread = new MyThread;
+
+    startProgram();
+
+    process->execute(program, arguments);
+
     process->moveToThread(thread);
     thread->start();
-    qDebug() << QThread::currentThreadId();
+
     connect(thread, SIGNAL(finished()), this, SLOT(finishProgram()));
 
-    if(thread->isFinished()){
-        qDebug() << "Finish";
-    }
+    game->addTimePlayed(calculateTime());
 
+}
+
+void MainWindow::startProgram(){
+    qDebug() << "Start timer";
+    start = QTime::currentTime();
+    qDebug() << start.toString();
 }
 
 void MainWindow::finishProgram(){
 
     qDebug() << "Ca marche";
+    stop = QTime::currentTime();
+    qDebug() << stop.toString();
+}
+
+int MainWindow::calculateTime(){
+
+    int stopTime = stop.second();
+    int startTime = start.second();
+    int time = startTime-stopTime;
+
+    return time;
 }
