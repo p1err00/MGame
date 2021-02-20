@@ -20,7 +20,6 @@ SOURCES += \
     Game.cpp \
     MainWindowInterface.cpp \
     MyThread.cpp \
-    Thread.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -29,12 +28,10 @@ HEADERS += \
     Game.h \
     MainWindow.h \
     MainWindowInterface.h \
-    MyThread.h \
-    Thread.h
+    MyThread.h
 
 FORMS += \
     AddDialog.ui \
-    Form.ui \
     MainWindow.ui
 
 # Default rules for deployment.

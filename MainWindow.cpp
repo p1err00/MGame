@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "AddDialog.h"
-#include "Thread.h"
 #include "MyThread.h"
 
 #include <QFileDialog>
@@ -27,6 +26,7 @@
 #include <QVector>
 #include <QThread>
 #include <QByteArray>
+#include <iostream>
 
 
 
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    on_pbLoad_clicked();
+    on_pushButton_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -45,7 +45,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pbAdd_clicked()
 {
-
     AddDialog *addDialog = new AddDialog;
     addDialog->show();
 }
@@ -53,18 +52,38 @@ void MainWindow::on_pbAdd_clicked()
 
 void MainWindow::on_pbDel_clicked()
 {
-    /*
-    qDebug() << selectGame;
-    for (int i = 0; i<listGame.size(); i++) {
-        qDebug() << "for";
-        qDebug() << listGame.takeAt(i)->name();
-        if(listGame.takeAt(i)->name() == selectGame){
-            qDebug() << "if";
 
-            listGame.removeAt(i);
+    QFile file("save.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
+    file.close();
+
+    for(QJsonValue value : jsonArray){
+
+        if(!value.isObject())
+            continue;
+
+        QJsonObject json = value.toObject();
+
+        if(selectGame == nullptr)
+            QMessageBox::warning(this, "Warning", selectGame->name());
+
+        if(json.value("name") == selectGame->name()){
+            listGame.removeOne(selectGame);
+            file.remove();
         }
     }
-    */
+
+    ui->listGameLayout->destroyed(ui->listGameLayout->widget());
+    for(auto item : listGame){
+        saveGame(item);
+    }
+
+    on_pushButton_clicked();
 }
 
 void MainWindow::saveGame(Game *game){
@@ -86,16 +105,15 @@ void MainWindow::saveGame(Game *game){
     QJsonObject json;
 
     json.insert("name", game->name());
-    json.insert("directory", game->directory());
+    json.insert("tdirectory", game->directory());
     json.insert("path", game->path());
     json.insert("date", game->date());
-    json.insert("timePlayed", QString::number(game->timePlayed()));
+    json.insert("timePlayed", game->timePlayed());
+    json.insert("dateLastuse", game->dateLastUse());
+    json.insert("desc", game->desc());
 
-    if(jsonArray.contains(json)){
-        qDebug() << "game exist";
-    } else {
+    if(!jsonArray.contains(json) && json.value("name").toString() == game->name() && json.value("date").toString() == game->date())
         jsonArray.append(json);
-    }
 
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
@@ -125,91 +143,163 @@ void MainWindow::loadGame(){
         QString directory = json.value("directory").toString();
         QString path = json.value("path").toString();
         QString date = json.value("date").toString();
-        int timePLayed = json.value("timePlayed").toInt();
-        Game *game = new Game(name, directory, path, date, timePLayed);
+        QString time = json.value("timePlayed").toString();
+        int timePlayed = time.toInt();
+        QString dateLastUse = json.value("dateLastUse").toString();
+        QString desc = json.value("desc").toString();
+        QList<QString> type;
+        type.append("action");
+        type.append("aventure");
+        type.append("RPG");
+        type.append("Mes couilles");
 
+        Game *game = new Game(name, directory, path, date, timePlayed, dateLastUse, desc, type);
         listGame.append(game);
-
     }
     file.close();
-
 }
 
-void MainWindow::on_pbLoad_clicked()
-{
+void MainWindow::loadList(){
 
+    //Destroy all widget and layout to clean dashboard
     qDeleteAll(ui->listGameLayout->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
+
     listGame.clear();
 
     loadGame();
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->destroyed(layout->widget());
-
-    QPushButton *pbDisplay;
+    ui->listWidget->clear();
 
     for(Game *item : listGame){
-
-        pbDisplay = new QPushButton;
-        ui->launchLayout->removeWidget(pbDisplay);
-
-        pbDisplay->setText(item->name());
-        pbDisplay->setFixedSize(300, 30);
-
-        layout->addWidget(pbDisplay);
-
-        //Create button connexion for each object in my file
-        connect(pbDisplay, &QPushButton::clicked, [=](){
-
-            //Insert name game into selectGame
-            selectGame = item;
-            displayGame(selectGame);
-        });
-
+        ui->listWidget->addItem(item->name());
     }
-    ui->listGameLayout->addLayout(layout);
 }
 
-void MainWindow::displayGame(Game *game){
-    //Clear all game's info
-    qDeleteAll(ui->verticalLayout_2->findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly));
 
-    QPushButton *btn = new QPushButton;
-
-    //add launch button
-
-    btn->setText("launch");
-
-
-    ui->verticalLayout_2->addWidget(btn);
-
-    //Insert value into dashboard
-    ui->lName->setText(game->name());
-    ui->lDirectory->setText(game->directory());
-    ui->lTimePlayed->setText(QString::number(game->timePlayed()));
-    ui->lDateInstall->setText(game->date());
-
-    //Set the current game
-    selectGame = game;
-
-    connect(btn, &QPushButton::clicked, [=](){
-        qDebug() << selectGame->path();
-        pbLaunchClicked(game);
-    });
-
+void MainWindow::startProgram(){
+    oStartTime = QDateTime::currentDateTime();
 }
 
-void MainWindow::pbLaunchClicked(Game *game){
 
-    QString program = game->path();
+void MainWindow::saveTimePlayed(Game *game){
+
+    QDateTime oEndtTime = QDateTime::currentDateTime();
+
+    int timeDiff = calculateTime(oStartTime, oEndtTime);
+
+    qDebug() << "Enter into save function";
+    QFile file("save.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonDocument jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8());
+    file.close();
+
+    for(auto item : jsonArray.array()){
+        if(!item.isObject())
+            continue;
+
+        QJsonObject rootJson = item.toObject();
+
+        if(rootJson.value("name").toString() == game->name()){
+
+            qDebug() << "Find my game";
+            //Call caclulate tim function
+
+            listGame.removeOne(game);
+
+            QJsonValue value = timeDiff + item.toObject().value("timePlayed").toInt();
+
+            QList<QString> type;
+            type.append("action");
+            type.append("aventure");
+            type.append("RPG");
+            type.append("Mes couilles");
+
+            game = new Game(game->name(), game->directory(), game->path(), game->date(), value.toInt(), game->dateLastUse(), game->desc(), type);
+
+            rootJson.remove(game->name());
+
+            selectGame = game;
+
+            on_pbDel_clicked();
+
+            saveGame(game);
+
+            changeDateLastUse(selectGame);
+
+            loadList();
+
+        }
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    loadList();
+}
+
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+
+    QFile file("save.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
+    file.close();
+
+    for(auto object : jsonArray){
+        if(!object.isObject())
+            continue;
+
+        if(item->text() == object.toObject().value("name").toString()){
+            ui->lName->setText(object.toObject().value("name").toString());
+            ui->lDirectory->setText(object.toObject().value("directory").toString());
+
+            //Convert int into time
+            int ti = object.toObject().value("timePlayed").toInt();
+            int sec = 0, min = 0, hour = 0;
+            sec = ti/1000;
+            //Convert to minutes
+            while(sec >= 60){
+                min += 1;
+                sec -= 60;
+            }
+            while(min >= 60){
+                hour +=1;
+                min -= 60;
+            }
+            ui->lTimePlayed->setText(QString::number(hour)+" : "+QString::number(min)+" : " + QString::number(sec));
+            ui->lDateInstall->setText(object.toObject().value("date").toString());
+            ui->lLastUse->setText(object.toObject().value("dateLastuse").toString());
+            ui->ldesc->setText(object.toObject().value("desc").toString());
+
+            //Set the current game
+            for(auto game : listGame){
+                if(game->name() == item->text()){
+                    selectGame = game;
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::on_pbLaunch_clicked()
+{
+
+    qDebug() << selectGame->name();
+
+    QString program = selectGame->path();
 
     QProcess *process = new QProcess();
     QStringList arguments;
 
     arguments << "start /c";
-
-    qDebug() << arguments;
-    qDebug() << program;
 
     MyThread *thread = new MyThread;
 
@@ -220,30 +310,67 @@ void MainWindow::pbLaunchClicked(Game *game){
     process->moveToThread(thread);
     thread->start();
 
-    connect(thread, SIGNAL(finished()), this, SLOT(finishProgram()));
-
-    game->addTimePlayed(calculateTime());
-
+    connect(thread, SIGNAL(finished()), this, SLOT(saveTimePlayed(game)));
+    //connect(thread, SIGNAL(finished()), this, SLOT(changeDateLastUse(game)));
+    saveTimePlayed(selectGame);
+    //changeDateLastUse(selectGame);
 }
 
-void MainWindow::startProgram(){
-    qDebug() << "Start timer";
-    start = QTime::currentTime();
-    qDebug() << start.toString();
+quint64 MainWindow::calculateTime(QDateTime oStartTime, QDateTime oEndtTime){
+
+    quint64 difference = qAbs(oStartTime.date().daysTo(oEndtTime .date()));
+    difference  *= static_cast<quint64>(24); // days to hours
+    difference  *= static_cast<quint64>(60); // hours to minutes
+    difference  *= static_cast<quint64>(60); // minutes to seconds
+    difference  *= static_cast<quint64>(1000); // seconds to milliseconds
+    difference += qAbs(oStartTime.time().msecsTo(oEndtTime .time()));
+
+    qDebug() << difference;
+    return difference;
 }
 
-void MainWindow::finishProgram(){
+void MainWindow::changeDateLastUse(Game *game){
 
-    qDebug() << "Ca marche";
-    stop = QTime::currentTime();
-    qDebug() << stop.toString();
-}
+    qDebug() << "Enter into change function";
+    QFile file("save.json");
 
-int MainWindow::calculateTime(){
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
 
-    int stopTime = stop.second();
-    int startTime = start.second();
-    int time = startTime-stopTime;
+    QTextStream stream(&file);
+    QJsonDocument jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8());
+    file.close();
 
-    return time;
+    for(auto item : jsonArray.array()){
+        if(!item.isObject())
+            continue;
+
+        QJsonObject rootJson = item.toObject();
+
+        if(rootJson.value("name").toString() == game->name()){
+
+            qDebug() << "Find my game";
+            //Call caclulate tim function
+
+            listGame.removeOne(game);
+
+            QDate value = QDate::currentDate();
+
+            QList<QString> type;
+            type.append("action");
+            type.append("aventure");
+            type.append("RPG");
+            type.append("Mes couilles");
+
+            game = new Game(game->name(), game->directory(), game->path(), game->date(), game->timePlayed(), value.toString(), game->desc(), type);
+
+            rootJson.remove(selectGame->name());
+
+            on_pbDel_clicked();
+
+            saveGame(game);
+            loadList();
+
+        }
+    }
 }

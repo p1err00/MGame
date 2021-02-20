@@ -24,6 +24,13 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Reload</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -64,100 +71,140 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <layout class="QVBoxLayout" name="listGameLayout"/>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="listGameLayout">
         <item>
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Name :</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Time played :</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Last use :</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Date install :</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Type : </string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_17">
-          <property name="text">
-           <string>Directory : </string>
-          </property>
-         </widget>
+         <widget class="QListWidget" name="listWidget"/>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="lName">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="lName">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lTimePlayed">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lLastUse">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lDateInstall">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ldesc">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lDirectory">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Name :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Time played :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Last use :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Date install :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Type : </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>Directory : </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QLabel" name="lTimePlayed">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lLastUse">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lDateInstall">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lType">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lDirectory">
-          <property name="text">
-           <string>None</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="launchLayout"/>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QVBoxLayout" name="launchLayout">
+            <item>
+             <widget class="QPushButton" name="pbLaunch">
+              <property name="text">
+               <string>Launch</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -171,7 +218,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">

@@ -14,6 +14,7 @@
 #include <QProcess>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QListWidgetItem>
 
 
 QT_BEGIN_NAMESPACE
@@ -39,7 +40,7 @@ public:
 
     Game *selectGame;
 
-    QTime start;
+    QDateTime oStartTime;
 
     QTime stop;
 
@@ -49,9 +50,11 @@ private slots:
 
     void on_pbDel_clicked();
 
-    void on_pbLoad_clicked();
+    void on_listWidget_itemClicked(QListWidgetItem *item);
 
-    void pbLaunchClicked(Game *game);
+    void on_pbLaunch_clicked();
+
+    quint64 calculateTime(QDateTime oStartTime, QDateTime oEndtTime);
 
 private:
 
@@ -59,18 +62,22 @@ private:
     QString path;
     QString dir;
     QPushButton *pbOpen;
-    QVBoxLayout *layout = new QVBoxLayout;
     QPushButton *launch;
     QJsonObject m_currentJsonObject; 
 
     void displayGame(Game *game);
 
-    int calculateTime();
-
 public slots:
 
-    void finishProgram();
+    void saveTimePlayed(Game *game);
 
     void startProgram();
+
+    void on_pushButton_clicked();
+
+    void changeDateLastUse(Game *game);
+
+    void loadList();
+
 };
 #endif // MAINWINDOW_H

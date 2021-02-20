@@ -1,17 +1,17 @@
 #ifndef ADDDIALOG_H
 #define ADDDIALOG_H
 
-#include "MainWindow.h"
 #include "Game.h"
 
-#include <QWidget>
-#include <QPushButton>
+#include <QDialog>
+#include <QTextCharFormat>
+#include <QDateTime>
 
 namespace Ui {
 class AddDialog;
 }
 
-class AddDialog : public QWidget
+class AddDialog : public QDialog
 {
     Q_OBJECT
 
@@ -19,15 +19,20 @@ public:
     explicit AddDialog(QWidget *parent = nullptr);
     ~AddDialog();
 
-
-    QString f;
-    QString path;
-    QString dir;
+    QString n;
+    QString p;
+    QString d;
+    QDateTime da;
+    QList<QString> l;
 
 private slots:
-    Game on_pushButton_clicked();
+    QMap<QString, QString> on_pbOpen_clicked();
 
-    void on_pushButton_3_clicked();
+    QString on_teDesc_textChanged();
+
+    Game on_buttonBox_accepted();
+
+    void on_leName_textChanged(const QString &arg1);
 
 private:
     Ui::AddDialog *ui;

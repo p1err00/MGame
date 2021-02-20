@@ -8,8 +8,8 @@
 class Game
 {
 public:
-    Game(QString name, QString directory, QString path, QString date);
-    Game(QString name, QString directory, QString path, QString date, int timePlayed);
+    Game(QString name, QString directory, QString path, QString date, QString desc, QList<QString> type);
+    Game(QString name, QString directory, QString path, QString date, int timePlayed, QString dateLastUse, QString desc, QList<QString> type);
     void addTimePlayed(int timePlayed);
     Game();
 
@@ -17,14 +17,20 @@ public:
     QString directory() const;
     QString path() const;
     QString date() const;
-    long timePlayed() const;
+    int timePlayed() const;
+    QString dateLastUse() const;
+    QString desc() const;
+    QList<QString> type() const;
 
 private:
-    long _timePlayed;
+    int _timePlayed;
     QString _name;
     QString _directory;
     QString _path;
     QString _date;
+    QString _dateLastUse;
+    QString _desc;
+    QList<QString> _type;
 
 };
 

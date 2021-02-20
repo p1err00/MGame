@@ -1,21 +1,55 @@
 #include "AddDialog.h"
-#include "MainWindow.h"
-#include "Game.h"
 #include "ui_AddDialog.h"
+#include "Game.h"
+#include "MainWindow.h"
 
-#include <QDialog>
-#include <QPushButton>
-#include <QMap>
-#include <QComboBox>
 #include <QFileInfo>
 #include <QFileDialog>
+#include <QMap>
+#include <QCheckBox>
 #include <QDebug>
 
 AddDialog::AddDialog(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::AddDialog)
 {
     ui->setupUi(this);
+
+    //Set item into QCombox
+    //Changed Value to a list to _listType
+
+    QList<QString> list;
+    list << "Action" << "Aventure" << "rpg" << "Mes couilles";
+
+    for(int i = 0; i < list.size(); i++){
+
+        QCheckBox *btn = new QCheckBox(list.at(i));
+        ui->layoutType->addWidget(btn);
+
+        connect(btn, &QCheckBox::stateChanged, [=](){
+
+            if(btn->isChecked()){
+                QList<QString> list;
+                list << btn->text();
+
+                l.append(btn->text());
+
+                for(int i = 0; i < list.size(); i++){
+
+                    QLabel *label = new QLabel(list.at(i));
+                    ui->layoutInfogame->addWidget(label);
+                }
+            }
+        });
+    }
+
+
+
+    //LeName
+    ui->leName->setPlaceholderText("Name : ");
+
+
+
 }
 
 AddDialog::~AddDialog()
@@ -23,18 +57,49 @@ AddDialog::~AddDialog()
     delete ui;
 }
 
-Game AddDialog::on_pushButton_clicked()
+QMap<QString, QString> AddDialog::on_pbOpen_clicked()
 {
     QFileInfo file = QFileDialog::getOpenFileName(this, "Open","*.exe");
 
-    path = file.absoluteFilePath();
-    f = path.section("/",-1,-1);
-    dir = path.section("/",0,-2);
+        p = file.absoluteFilePath();
+        //f = p.section("/",-1,-1);
+        d = p.section("/",0,-2);
 
-    Game *game = new Game(f,dir,path, QDateTime::currentDateTime().toString("dd.MM.yyyy hh.mm"));
+        da = QDateTime::currentDateTime();
 
-    ui->label->setText(game->name());
-    ui->label_2->setText(game->path());
+        QMap<QString, QString> keys;
+        keys.insert("p", p);
+        keys.insert("d", d);
+        keys.insert("da", da.toString());
+
+        ui->ldirectory->setText(d);
+        ui->lpath->setText(p);
+        ui->ldate->setText(da.toString());
+
+        return keys;
+}
+
+QString AddDialog::on_teDesc_textChanged()
+{
+    QString data = ui->teDesc->toHtml();
+    QString dataText = ui->teDesc->toPlainText();
+
+    if(data.length() >= 20){
+        ui->ldesc->setText("\n");
+    }
+    ui->ldesc->setText(dataText);
+    //ui->ldesc->as
+
+    return dataText;
+}
+
+Game AddDialog::on_buttonBox_accepted()
+{
+    QString desc = on_teDesc_textChanged();
+
+    n = ui->leName->text();
+
+    Game *game = new Game(n,d,p, QDateTime::currentDateTime().toString("dd.MM.yyyy hh.mm"), desc, l);
 
     MainWindow *mw = new MainWindow;
 
@@ -45,12 +110,10 @@ Game AddDialog::on_pushButton_clicked()
 
     qDebug()<< "Game loading";
     mw->loadGame();
-
     return *game;
 }
 
-void AddDialog::on_pushButton_3_clicked()
+void AddDialog::on_leName_textChanged(const QString &arg1)
 {
-
-    this->close();
+    ui->lname->setText(arg1);
 }
