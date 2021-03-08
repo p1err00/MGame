@@ -42,14 +42,8 @@ AddDialog::AddDialog(QWidget *parent) :
             }
         });
     }
-
-
-
     //LeName
     ui->leName->setPlaceholderText("Name : ");
-
-
-
 }
 
 AddDialog::~AddDialog()
@@ -62,8 +56,9 @@ QMap<QString, QString> AddDialog::on_pbOpen_clicked()
     QFileInfo file = QFileDialog::getOpenFileName(this, "Open","*.exe");
 
         p = file.absoluteFilePath();
-        //f = p.section("/",-1,-1);
         d = p.section("/",0,-2);
+
+        //d.replace(" ", "\\ ");
 
         da = QDateTime::currentDateTime();
 

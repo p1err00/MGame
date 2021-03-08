@@ -56,6 +56,8 @@ private slots:
 
     quint64 calculateTime(QDateTime oStartTime, QDateTime oEndtTime);
 
+    void on_listWidget_customContextMenuRequested(const QPoint &pos);
+
 private:
 
     QString f;
@@ -64,6 +66,7 @@ private:
     QPushButton *pbOpen;
     QPushButton *launch;
     QJsonObject m_currentJsonObject; 
+    QWidget *wid;
 
     void displayGame(Game *game);
 

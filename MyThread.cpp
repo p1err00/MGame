@@ -10,4 +10,5 @@ MyThread::MyThread()
 }
 void MyThread::run(){
     qDebug() << "Enter the thread";
+
 }

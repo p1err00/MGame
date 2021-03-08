@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     w.setStyleSheet(
-                    "QLabel {"
+                    "QListWidget {"
                     "background : qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 white, stop:1 #969696);"
                     "color : black;"
                     "min-width : 10em;"

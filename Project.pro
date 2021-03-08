@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     AddDialog.cpp \
+    EditDialog.cpp \
     Game.cpp \
     MainWindowInterface.cpp \
     MyThread.cpp \
@@ -25,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     AddDialog.h \
+    EditDialog.h \
     Game.h \
     MainWindow.h \
     MainWindowInterface.h \
@@ -32,6 +34,7 @@ HEADERS += \
 
 FORMS += \
     AddDialog.ui \
+    EditDialog.ui \
     MainWindow.ui
 
 # Default rules for deployment.
