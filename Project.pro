@@ -17,24 +17,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     AddDialog.cpp \
-    EditDialog.cpp \
+    Collection/Collection.cpp \
+    Dialog/SelectTypeDialog.cpp \
     Game.cpp \
-    MainWindowInterface.cpp \
     MyThread.cpp \
+    Settings/Settings.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
     AddDialog.h \
-    EditDialog.h \
+    Collection/Collection.h \
+    Dialog/SelectTypeDialog.h \
     Game.h \
     MainWindow.h \
-    MainWindowInterface.h \
-    MyThread.h
+    MyThread.h \
+    Settings/Settings.h
 
 FORMS += \
     AddDialog.ui \
-    EditDialog.ui \
+    Dialog/SelectTypeDialog.ui \
     MainWindow.ui
 
 # Default rules for deployment.

@@ -1,7 +1,8 @@
 #include "AddDialog.h"
 #include "ui_AddDialog.h"
-#include "Game.h"
 #include "MainWindow.h"
+#include "Game.h"
+#include "Dialog/SelectTypeDialog.h"
 
 #include <QFileInfo>
 #include <QFileDialog>
@@ -24,7 +25,6 @@ AddDialog::AddDialog(QWidget *parent) :
     for(int i = 0; i < list.size(); i++){
 
         QCheckBox *btn = new QCheckBox(list.at(i));
-        ui->layoutType->addWidget(btn);
 
         connect(btn, &QCheckBox::stateChanged, [=](){
 
@@ -44,6 +44,27 @@ AddDialog::AddDialog(QWidget *parent) :
     }
     //LeName
     ui->leName->setPlaceholderText("Name : ");
+    //ListType
+    QFile file("Type.txt");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "not file";
+        return;
+    }
+    QTextStream stream(&file);
+    QString line;
+    QListWidgetItem *lHeader = new QListWidgetItem("Type :");
+
+    ui->lwListType->addItem(lHeader);
+
+    while (stream.readLineInto(&line)) {
+        QListWidgetItem *w = new QListWidgetItem(line);
+        w->setFlags(w->flags() | Qt::ItemIsUserCheckable);
+        w->setCheckState(Qt::Unchecked);
+        ui->lwListType->addItem(w);
+
+    }
+    file.close();
 }
 
 AddDialog::~AddDialog()
@@ -94,6 +115,12 @@ Game AddDialog::on_buttonBox_accepted()
 
     n = ui->leName->text();
 
+    for(int i = 0; i < ui->lwListType->count(); i++){
+        if(ui->lwListType->item(i)->checkState() == Qt::Checked){
+            l.append(ui->lwListType->item(i)->text());
+        }
+    }
+
     Game *game = new Game(n,d,p, QDateTime::currentDateTime().toString("dd.MM.yyyy hh.mm"), desc, l);
 
     MainWindow *mw = new MainWindow;
@@ -104,7 +131,7 @@ Game AddDialog::on_buttonBox_accepted()
     mw->saveGame(game);
 
     qDebug()<< "Game loading";
-    mw->loadGame();
+    mw->loadgameFromFile();
     return *game;
 }
 

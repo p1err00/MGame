@@ -34,7 +34,7 @@
           <widget class="QLineEdit" name="leName"/>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layoutType"/>
+          <widget class="QListWidget" name="lwListType"/>
          </item>
         </layout>
        </item>

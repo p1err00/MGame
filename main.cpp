@@ -1,32 +1,61 @@
 #include "MainWindow.h"
+#include "Game.h"
 
 #include <QApplication>
+#include <QSettings>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
 
+    //Creation settings
+        //Add list game
+    QSettings settings("MGame", "Mon programme");
+    settings.beginGroup("File");
+    settings.setValue("nameFileGame", "save.txt");
+    settings.endGroup();
+    qDebug() << settings.value("File/nameFileGame").toString();
+    w.file.setFileName(settings.value("File/nameFileGame").toString());
+
     w.setStyleSheet(
                     "QListWidget {"
-                    "background : qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 white, stop:1 #969696);"
+                    "background : #dfdede;"
                     "color : black;"
-                    "min-width : 10em;"
+                    "min-width : 13em;"
                     "height : 2em;"
-                    "padding : 10px;"
+                    "padding-left : 10px;"
+                    "padding-right : 10px;"
+                    "border-bottom-right-radius: 15px;"
+                    "border-top-right-radius: 15px;"
+                    "font: 12pt 'Courier New', 'monospace';"
                     "}"
-                    "QPushButton {"
-                    "background-color : #858585;"
-                    "color : white;"
-                    "width : 250px;"
-                    "height : 40px;"
-                    "border-width : 4px;"
-                    "border-style : solid;"
-                    "border-radius : 10px;"
+                    "QScrollBar:vertical {"
+                    "border: none;"
+                    "background:#dfdede;"
+                    "width: 7px;"
+                    "margin-left: 3px;"
+                    "margin-top: 3px;"
                     "}"
-                    "QPushButton:hover {"
-                    "background : qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #C5C5C5, stop:1 #666666);"
-                    "}");
+                    "QScrollBar::handle:vertical {"
+                        "background: black;"
+                        "min-height: 0px;"
+                    "}"
+                    "QScrollBar::add-line:vertical {"
+                        "background: red;"
+                        "height: 0px;"
+                        "subcontrol-position: bottom;"
+                        "subcontrol-origin: margin;"
+                    "}"
+                    "QScrollBar::sub-line:vertical {"
+                        "background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+                        "stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+                        "height: 0 px;"
+                        "subcontrol-position: top;"
+                        "subcontrol-origin: margin;"
+                    "}"
+                    );
+    //w.setWindowState(Qt::WindowFullScreen);
     w.show();
     return a.exec();
 }
