@@ -179,7 +179,7 @@ void MainWindow::saveGame(Game *game){
     }
 
     QJsonObject json;
-    json = game->toJson(*game);
+    json = game->toJson();
 
     if(!jsonArray.contains(json) || json.value("name").toString() != game->name() || json.value("date").toString() != game->date())
         jsonArray.append(json);
@@ -218,9 +218,9 @@ void MainWindow::loadgameFromFile(){
 
         Game *game = new Game();
 
-        *game = game->fromJson(value.toObject());
-        for(auto i : game->type())
-            qDebug() << game->type();
+        game->fromJson(value.toObject());
+        for(auto i : game->types())
+            qDebug() << game->types();
         listGame.append(game);
     }
 }
@@ -234,9 +234,10 @@ void MainWindow::loadList(){
 
     loadgameFromFile();
     ui->listWidget->clear();
-
+    QListWidgetItem *it;
     for(Game *item : listGame){
-        ui->listWidget->addItem(item->name());
+        it = new QListWidgetItem(item->name());
+        ui->listWidget->addItem(it);
     }
     ui->listWidget->sortItems();
 }
@@ -248,10 +249,6 @@ void MainWindow::startProgram(){
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
 
-    /* Change description after click on other game
-    if(selectGame)
-        saveDescGame();
-    */
     QFile file("save.json");
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -426,21 +423,19 @@ void MainWindow::on_pbAddType_clicked()
     if(st->listType.isEmpty())
         return;
 
-    for(auto i : st->listType){
+    for(auto i : st->listType)
         list.append(i);
+
+    //Change type
+    selectGame->setTypes(list);
+    on_pbDel_clicked();
+    saveGame(selectGame);
+
+    //Delete item display
+    for(int i = 0; i < ui->listWidget->count(); i++){
+        if(ui->listWidget->item(i)->text() == selectGame->name() )
+            delete ui->listWidget->item(i);
     }
-
-    Game *game = new Game();
-    QJsonObject json = game->toJson(*game);
-    game = new Game(selectGame->name(), selectGame->directory(), selectGame->path(), selectGame->date(), selectGame->desc(), list);
-    listGame.removeOne(selectGame);
-    json.swap(json);
-    selectGame->changeType(json, list);
-    listGame.append(game);
-    QListWidgetItem *it = new QListWidgetItem(game->name());
-
-    on_listWidget_itemClicked(it);
-
 }
 
 void MainWindow::saveDescGame(){
@@ -448,7 +443,7 @@ void MainWindow::saveDescGame(){
     if(!selectGame)
         return;
 
-    selectGame->changeDesc(selectGame->toJson(*selectGame), descChange);
+    //selectGame->changeDesc(selectGame->toJson(*selectGame), descChange);
     on_pbDel_clicked();
     saveGame(selectGame);
     listGame.removeOne(selectGame);

@@ -125,6 +125,9 @@ void Game::setPath(QString path){
 void Game::setDate(QString date){
     _date = date;
 }
+void Game::setDateLastUse(QString dateLastUse){
+    _dateLastUse = dateLastUse;
+}
 void Game::setDesc(QString desc){
     _desc = desc;
 }
