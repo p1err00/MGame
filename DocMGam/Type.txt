@@ -1,0 +1,24 @@
+Plateform
+Shooter
+Fightning
+Beat'em up
+Stealth
+Survival
+Battle Royal
+Rythme
+Survival horror
+Aventure
+Text Adventure
+Visual Novel
+Action RPG
+MMORPG
+Roguelike
+First person
+Threed person
+Simulation
+Strategy
+Sport
+Casual
+Horror
+Logic
+Inde

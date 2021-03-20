@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "AddDialog.h"
 #include "Settings/Settings.h"
+#include "Collection/Collection.h"
 
 #include <QMainWindow>
 #include <QLineEdit>
@@ -35,6 +36,8 @@ public:
 
     QList<Game*> listGame;
 
+    QList<Collection*> listCollection;
+
     ~MainWindow();
 
     void saveGame(Game *game);
@@ -48,6 +51,8 @@ public:
     QTime stop;
     QSettings settings;
     QFile file;
+    QList<QString> favList;
+
 
 private slots:
 
@@ -57,12 +62,9 @@ private slots:
 
     void on_pbLaunch_clicked();
 
-    quint64 calculateTime(QDateTime oStartTime, QDateTime oEndtTime);
-
     void on_listWidget_customContextMenuRequested(const QPoint &pos);
 
     void on_pbAddType_clicked();
-
 
     void on_teDesc_textChanged();
 
@@ -77,7 +79,6 @@ private:
     QWidget *wid;
     QString descChange;
 
-
     QMenu *listMenu = new QMenu;
     QMenu *itemMenu = new QMenu;
     QMenu *appMenu = new QMenu;
@@ -91,6 +92,7 @@ private:
     QAction *action_itemRemoveFromCollection_itemMenu = new QAction("Supprimer de la collection");
     QAction *action_itemProperty_itemMenu = new QAction("Property");
 
+    QAction *action_createCollection_collectionMenu = new QAction("New collection");
     QAction *action_addToCollection_collectionMenu = new QAction("Add to collection");
     QAction *action_displayCollection_collectionMenu = new QAction("Afficher cette collection");
     QAction *action_renameCollection_colectionMenu = new QAction("Renommer collection");
@@ -103,24 +105,25 @@ private:
 
     QString formatSize(qint64 size);
 
+    void displayCollectionInLayout(Collection *collection);
+
+    void reloadGame();
+
+    quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
 
 public slots:
 
-    void saveTimePlayed(Game *game);
-
     void startProgram();
-
-    void changeDateLastUse(Game *game);
 
     void loadList();
 
-    void displayGame(Game *game);
+    //void displayGame(Game *game);
 
     //Find idea to return that in private slot
     void on_pbDel_clicked();
 
     void saveDescGame();
 
-
+    void loadFavList();
 };
 #endif // MAINWINDOW_H

@@ -4,6 +4,10 @@
 #include "MyThread.h"
 #include "Game.h"
 #include "Dialog/SelectTypeDialog.h"
+#include "Collection/Collection.h"
+#include "Settings/SettingsDialog.h"
+#include "Settings/FavoriDialog.h"
+#include "WorkerThread.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -39,24 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //Set stylesheet listWidget
-
-    ui->listWidget->setStyleSheet(
-                "QListWidget::item {"
-                   "max-width: 80px;"
-                   "background: white;"
-                   "border-bottom: 2px solid black;"
-                   "border-top-right-radius: 7px;"
-                   "margin-top: 10px;"
-                   "min-height: 32px;"
-                "}"
-                "QListWidget::item:hover {"
-                "border-left: 2px solid black;"
-                "border-bottom: 0;"
-                "}"
-                "QListWidget::item:selected {"
-                   "background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 grey, stop:1 #d6d6d6);"
-                "}");
     ui->teDesc->setFrameStyle(QFrame::NoFrame);
     ui->lwType->setFrameStyle(QFrame::NoFrame);
     loadList();
@@ -82,14 +68,15 @@ MainWindow::MainWindow(QWidget *parent)
     listMenu->setTitle("Tableau");
     listMenu->addAction(action_itemAdd_listMenu);
     listMenu->addAction(action_itemReload_listMenu);
+    listMenu->addAction(action_itemDel_itemMenu);
 
     itemMenu->setTitle("Game");
     itemMenu->addAction(action_itemFavori_itemMenu);
-    itemMenu->addAction(action_itemDel_itemMenu);
     itemMenu->addAction(action_itemRemoveFromCollection_itemMenu);
     itemMenu->addAction(action_itemProperty_itemMenu);
 
     collectionMenu->setTitle("Collection");
+    collectionMenu->addAction(action_createCollection_collectionMenu);
     collectionMenu->addAction(action_addToCollection_collectionMenu);
     collectionMenu->addAction(action_renameCollection_colectionMenu);
     collectionMenu->addAction(action_deleteCollection_collectionMenu);
@@ -100,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     listMenu->addMenu(itemMenu);
     listMenu->addMenu(collectionMenu);
-
+    collectionMenu->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -114,13 +101,13 @@ void MainWindow::on_pbAdd_clicked()
     addDialog->exec();
 }
 
+void MainWindow::reloadGame(){
 
-void MainWindow::on_pbDel_clicked()
-{
+    selectGame->types();
+    if(selectGame == nullptr)
+        QMessageBox::warning(this, "Warning", selectGame->name());
 
     QFile file("save.json");
-
-    loadgameFromFile();
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
@@ -130,7 +117,6 @@ void MainWindow::on_pbDel_clicked()
     file.close();
 
     int count = 0;
-
     for(QJsonValue value : jsonArray){
 
         if(!value.isObject())
@@ -138,27 +124,52 @@ void MainWindow::on_pbDel_clicked()
 
         QJsonObject json = value.toObject();
 
-        if(selectGame == nullptr)
-            QMessageBox::warning(this, "Warning", selectGame->name());
-
-        if(json.contains(selectGame->name()) && json.value("path") == selectGame->path()){
-
-            jsonArray.removeAt(value.toObject().count());
+        if(json.value("path") == selectGame->path()){
+            qDebug() << "Find";
+            jsonArray.removeAt(count);
+            listGame.removeAt(count);
         }
         count++;
     }
-    //ui->lwinfo->clear();
-
-    listGame.clear();
+    QJsonDocument doc = QJsonDocument(jsonArray);
+    file.open(QIODevice::WriteOnly);
+    file.write(doc.toJson());
+    file.close();
     loadgameFromFile();
+}
 
-    file.remove();
+void MainWindow::on_pbDel_clicked()
+{
 
-    for(auto item : listGame){
-        if(item->name() != selectGame->name())
-                saveGame(item);
+    if(selectGame == nullptr)
+        QMessageBox::warning(this, "Warning", selectGame->name());
+
+    QFile file("save.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
+    file.close();
+
+    int count = 0;
+    for(QJsonValue value : jsonArray){
+
+        if(!value.isObject())
+            continue;
+
+        QJsonObject json = value.toObject();
+
+        if(json.value("path") == selectGame->path()){
+            qDebug() << "Find";
+            jsonArray.removeAt(count);
+            listGame.removeAt(count);
+            ui->listWidget->removeItemWidget(ui->listWidget->item(count));
+        }
+        count++;
     }
-    loadList();
+
 }
 
 void MainWindow::saveGame(Game *game){
@@ -219,8 +230,11 @@ void MainWindow::loadgameFromFile(){
         Game *game = new Game();
 
         game->fromJson(value.toObject());
-        for(auto i : game->types())
-            qDebug() << game->types();
+
+        for(auto i : game->types()){
+            qDebug() << i;
+        }
+
         listGame.append(game);
     }
 }
@@ -242,9 +256,6 @@ void MainWindow::loadList(){
     ui->listWidget->sortItems();
 }
 
-void MainWindow::startProgram(){
-    oStartTime = QDateTime::currentDateTime();
-}
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
@@ -317,31 +328,70 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_pbLaunch_clicked()
 {
     qDebug() << "Launch";
-    /*
-    QString program =  selectGame->path().section("/", -1);
+
+    QString program =  selectGame->path();
     QStringList arguments;
     QString workingDirectory = selectGame->directory();
 
     QProcess *process = new QProcess();
 
 
-    arguments << "-f" << selectGame->path().section("/", -1);
+    arguments << "start /c " << selectGame->path().section("/", -1);
 
     qDebug() << arguments;
 
     MyThread *thread = new MyThread;
 
-    startProgram();
+    QDateTime startProcess =QDateTime::currentDateTime();
 
-    process->startDetached(program
-                           , arguments, workingDirectory);
-
+    process->execute(program, arguments);
     process->moveToThread(thread);
+
     thread->start();
 
-    //connect(thread, SIGNAL(finished()), this, SLOT(saveTimePlayed(game)));
+    connect(thread, &QThread::finished, [=](){
+        qDebug() << "Go to save time";
+
+        QDateTime stopProcess = QDateTime::currentDateTime();
+
+        quint64 timeDiff = calculateTime(startProcess, stopProcess);
+
+        QDate value = QDate::currentDate();
+
+        //int timePlayed = json.value("timePlayed").toInt();
+        //timePlayed += timeDiff;
+
+        Game *game = selectGame;
+        game->setTimePlayed(selectGame->timePlayed() + timeDiff);
+        game->setDateLastUse(value.toString());
+        for(int i = 0; i < ui->lwType->count(); i++){
+            //QList<QString>
+
+        }
+        //game->setTypes()
+
+        reloadGame();
+        saveGame(selectGame);
+        loadgameFromFile();
+        loadList();
+    });
+
     //connect(thread, SIGNAL(finished()), this, SLOT(deleteLater()));
-    */
+
+}
+
+//Calculate difference between start and stop time program
+quint64 MainWindow::calculateTime(QDateTime startProcess, QDateTime stopProcess){
+
+    quint64 difference = qAbs(startProcess.date().daysTo(stopProcess .date()));
+    difference  *= static_cast<quint64>(24); // days to hours
+    difference  *= static_cast<quint64>(60); // hours to minutes
+    difference  *= static_cast<quint64>(60); // minutes to seconds
+    difference  *= static_cast<quint64>(1000); // seconds to milliseconds
+    difference += qAbs(startProcess.time().msecsTo(stopProcess .time()));
+
+    qDebug() << difference;
+    return difference;
 }
 
 void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
@@ -367,7 +417,18 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
         loadList();
 
     if(selectedAction == action_itemProperty_itemMenu) {
-
+        Game *game;
+        SettingsDialog *st = new SettingsDialog();
+        st->displayGame(selectGame);
+        st->exec();
+        *selectGame = st->on_buttonBox_accepted();
+        qDebug() << selectGame->name();
+        game = selectGame;
+        reloadGame();
+        saveGame(game);
+        on_pbDel_clicked();
+        loadgameFromFile();
+        loadList();
     }
 
     if(selectedAction == action_itemDel_itemMenu) {
@@ -381,7 +442,29 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
     }
 
     if(selectedAction == action_itemFavori_itemMenu){
-        qDebug() << "Favori";
+        FavoriDialog *fd = new FavoriDialog;
+        if(pointedItem->icon().isNull()){
+
+            pointedItem->setIcon(QIcon("star.png"));
+            favList = fd->addFav(favList, pointedItem->text());
+            fd->saveFile(favList);
+            qDebug() << favList;
+         } else{
+            favList = fd->delFav(favList, pointedItem->text());
+            pointedItem->setIcon(QIcon());
+            qDebug() << favList;
+
+        }
+    }
+
+    if(selectedAction == action_createCollection_collectionMenu){
+        Collection *collection = new Collection("");
+        collection->createCollection();
+        if(collection->getName().isEmpty())
+            return;
+        listCollection.append(collection);
+
+        displayCollectionInLayout(collection);
     }
 
     itemMenu->setEnabled(true);
@@ -427,26 +510,20 @@ void MainWindow::on_pbAddType_clicked()
         list.append(i);
 
     //Change type
-    selectGame->setTypes(list);
-    on_pbDel_clicked();
-    saveGame(selectGame);
-
-    //Delete item display
-    for(int i = 0; i < ui->listWidget->count(); i++){
-        if(ui->listWidget->item(i)->text() == selectGame->name() )
-            delete ui->listWidget->item(i);
-    }
+    Game *game = selectGame;
+    game->setTypes(list);
+    reloadGame();
+    saveGame(game);
+    loadgameFromFile();
+    loadList();
 }
 
 void MainWindow::saveDescGame(){
 
-    if(!selectGame)
-        return;
-
-    //selectGame->changeDesc(selectGame->toJson(*selectGame), descChange);
-    on_pbDel_clicked();
-    saveGame(selectGame);
-    listGame.removeOne(selectGame);
+    Game *game = selectGame;
+    game->setDesc(ui->teDesc->toPlainText());
+    reloadGame();
+    loadgameFromFile();
     loadList();
 
 }
@@ -454,3 +531,31 @@ void MainWindow::on_teDesc_textChanged()
 {
     descChange.append(ui->teDesc->toPlainText());
 }
+
+void MainWindow::displayCollectionInLayout(Collection *collection){
+
+    QListWidget *wCollection = new QListWidget;
+    QLabel *lNameCollection = new QLabel(collection->getName());
+
+    ui->layoutCollection->addWidget(lNameCollection);
+    ui->layoutCollection->addWidget(wCollection);
+}
+
+void MainWindow::loadFavList(){
+
+    int count = 0;
+    for(auto i : favList){
+        for(int i = 0; i < ui->listWidget->count(); i++){
+
+            if(ui->listWidget->item(count)->text() == i){
+                qDebug() << "trouver item" + QString::number(i);
+                ui->listWidget->item(count)->setIcon(QIcon("star.png"));
+            }
+
+        }
+
+        count++;
+    }
+
+}
+

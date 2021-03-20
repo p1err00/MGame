@@ -12,4 +12,7 @@ void MyThread::run(){
 
     qDebug() << "Enter the thread";
 
+    connect(this, &QThread::finished, [=](){
+        qDebug() << "finished";
+    });
 }

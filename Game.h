@@ -27,6 +27,7 @@ public:
     void setDateLastUse(QString date);
     void setDesc(QString desc);
     void setTypes(QList<QString> list);
+    void setTimePlayed(int timePlayed);
 
     Game();
 
@@ -58,16 +59,11 @@ public slots:
 
 private slots:
 
-    QJsonObject changeTimePlayed(QJsonObject json, QDateTime startProcess);
-
-    QJsonObject changeDateLastUse(QJsonObject json);
-
-    quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
-
 public slots:
     QJsonObject changeTypes(QJsonObject json, QList<QString> list);
 
     QJsonObject changeDesc(QJsonObject json, QString desc);
+
 
 };
 

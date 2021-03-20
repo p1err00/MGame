@@ -1,0 +1,128 @@
+[
+    {
+        "date": "26.02.2021 18.07",
+        "dateLastuse": "",
+        "desc": "Un jeu futuriste entre GTA et\nSkyrim",
+        "name": "Cyberpunk 2077",
+        "path": "D:/Games/Cyberpunk 2077/REDprelauncher.exe",
+        "tdirectory": "D:/Games/Cyberpunk 2077",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.08",
+        "dateLastuse": "",
+        "desc": "Un jeu à notre epoque sur une secte\namericaine avec un goutou mysterieux",
+        "name": "Far cry 5",
+        "path": "D:/Games/Far Cry 5/bin/FarCry5.exe",
+        "tdirectory": "D:/Games/Far Cry 5/bin",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.09",
+        "dateLastuse": "",
+        "desc": "Un jeu situé dans la region de Chernobyle,\nincarnant un scientifique à la recherche de\nsa femme disparu il y a 30 ans",
+        "name": "Chernobylite",
+        "path": "E:/Download/Chernobylite/ChernobylGame.exe",
+        "tdirectory": "E:/Download/Chernobylite",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.10",
+        "dateLastuse": "",
+        "desc": "Vous vous retrouvez dans la peau d'un \nhackeur à la botte d'une grosse entreprise\nà la recherche des secrets sur les \nemployées",
+        "name": "Cyberman hunt",
+        "path": "E:/Download/Cyber_Manhunt/CyberManhunt.exe",
+        "tdirectory": "E:/Download/Cyber_Manhunt",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.11",
+        "dateLastuse": "",
+        "desc": "Un Soul like dans la peau de la mort, avec des \ngraphismes assez enfantin",
+        "name": "Shattered",
+        "path": "E:/Download/Shattered - Tale of the Forgotten King/ShatteredTOTFK.exe",
+        "tdirectory": "E:/Download/Shattered - Tale of the Forgotten King",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.12",
+        "dateLastuse": "",
+        "desc": "Un hack 'n slash dans la vie d'un chasseur de demon ",
+        "name": "Devil May Cry",
+        "path": "F:/Games/Devil May Cry 5/DevilMayCry5_Bloody_Palace_Unlocked.exe",
+        "tdirectory": "F:/Games/Devil May Cry 5",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.13",
+        "dateLastuse": "",
+        "desc": "Un jeu basé sur le seigneur des anneaux",
+        "name": "Terre du milieu : L'ombre du Mordor",
+        "path": "F:/Games/Middle Earth Shadow of War Definitive Edition/x64/ShadowOfWar.exe",
+        "tdirectory": "F:/Games/Middle Earth Shadow of War Definitive Edition/x64",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.14",
+        "dateLastuse": "",
+        "desc": "Je ne sais pas mais je verrais ça plus tard",
+        "name": "BPRM - Bullet per minute",
+        "path": "G:/Games/BPM BULLETS PER MINUTE/WindowsNoEditor/BPMGame.exe",
+        "tdirectory": "G:/Games/BPM BULLETS PER MINUTE/WindowsNoEditor",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.15",
+        "dateLastuse": "",
+        "desc": "Un jeu en vue du dessus ou vous\nsuivez un chasseur de monstre (je crois)\nqui bute tout ce qui bouge",
+        "name": "Hellsign",
+        "path": "G:/Games/HellSign/HellSign.exe",
+        "tdirectory": "G:/Games/HellSign",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.16",
+        "dateLastuse": "",
+        "desc": "Vous incarnez un tueur à gage professionnel \npour resoudre des contrat à votre maniere\ndans un semi open-world",
+        "name": "Hitman 3",
+        "path": "G:/Games/Hitman 3/Launcher.exe",
+        "tdirectory": "G:/Games/Hitman 3",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.16",
+        "dateLastuse": "",
+        "desc": "Un jeu chelou et qui n'a pas l'air\ncompliqué",
+        "name": "Magia - X",
+        "path": "G:/Games/Magia-X/Magia X.exe",
+        "tdirectory": "G:/Games/Magia-X",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.18",
+        "dateLastuse": "",
+        "desc": "Devenez l'un des meilleurs vendeur de\ndrogue de votre ville, en agrandissant\nvotre buisness, en engageant du\npersonnel, en esquivant la flicaille",
+        "name": "Drug dealer simulator",
+        "path": "L:/Games/DrugDealerSimulator/DrugDealerSimulator.exe",
+        "tdirectory": "L:/Games/DrugDealerSimulator",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.18",
+        "dateLastuse": "",
+        "desc": "Resident evil putaiiiiiiiiiiiiiiiiiiiiiiiiin",
+        "name": "Resident evil 3",
+        "path": "L:/Games/RE3/re3.exe",
+        "tdirectory": "L:/Games/RE3",
+        "timePlayed": 0
+    },
+    {
+        "date": "26.02.2021 18.19",
+        "dateLastuse": "",
+        "desc": "Resident evil putaiiiiiiiiiiiiiiiiiiiiiiiiiiiiin",
+        "name": "Resident evil 7",
+        "path": "L:/Games/Resident Evil 7/re7.exe",
+        "tdirectory": "L:/Games/Resident Evil 7",
+        "timePlayed": 0
+    }
+]

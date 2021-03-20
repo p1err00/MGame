@@ -34,11 +34,6 @@ AddDialog::AddDialog(QWidget *parent) :
 
                 l.append(btn->text());
 
-                for(int i = 0; i < list.size(); i++){
-
-                    QLabel *label = new QLabel(list.at(i));
-                    ui->layoutInfogame->addWidget(label);
-                }
             }
         });
     }
@@ -100,12 +95,6 @@ QString AddDialog::on_teDesc_textChanged()
     QString data = ui->teDesc->toHtml();
     QString dataText = ui->teDesc->toPlainText();
 
-    if(data.length() >= 20){
-        ui->ldesc->setText("\n");
-    }
-    ui->ldesc->setText(dataText);
-    //ui->ldesc->as
-
     return dataText;
 }
 
@@ -135,7 +124,3 @@ Game AddDialog::on_buttonBox_accepted()
     return *game;
 }
 
-void AddDialog::on_leName_textChanged(const QString &arg1)
-{
-    ui->lname->setText(arg1);
-}

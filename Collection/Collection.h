@@ -2,13 +2,29 @@
 #define COLLECTION_H
 
 #include <QList>
+#include <QDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QStyle>
+#include <QDesktopWidget>
+#include <QScreen>
+#include <QWidget>
+#include <QGuiApplication>
+#include <QDebug>
+#include <QMessageBox>
 
 class Collection
 {
 public:
     Collection(QString name);
 
-    Collection addCollection();
+    QString getName();
+    void setName(QString name);
+
+    void createCollection();
+
+    void addToCollection();
 
     void deleteCollection();
 
@@ -22,7 +38,7 @@ public:
 
 public slots:
 
-    Collection fromJson();
+    void fromJson();
 
     QJsonObject toJson();
 
@@ -32,7 +48,7 @@ public slots:
 
 private :
     QString _name;
-
+    Collection *col;
 
 
 };

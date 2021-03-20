@@ -21,7 +21,10 @@ SOURCES += \
     Dialog/SelectTypeDialog.cpp \
     Game.cpp \
     MyThread.cpp \
+    Settings/FavoriDialog.cpp \
     Settings/Settings.cpp \
+    Settings/SettingsDialog.cpp \
+    WorkerThread.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -32,12 +35,16 @@ HEADERS += \
     Game.h \
     MainWindow.h \
     MyThread.h \
-    Settings/Settings.h
+    Settings/FavoriDialog.h \
+    Settings/Settings.h \
+    Settings/SettingsDialog.h \
+    WorkerThread.h
 
 FORMS += \
     AddDialog.ui \
     Dialog/SelectTypeDialog.ui \
-    MainWindow.ui
+    MainWindow.ui \
+    Settings/SettingsDialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
