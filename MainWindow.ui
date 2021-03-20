@@ -19,65 +19,6 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QComboBox" name="comboBox">
-        <property name="statusTip">
-         <string/>
-        </property>
-        <property name="currentText">
-         <string>Trier par :</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Trier par :</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>aze</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>qsd</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>wxc</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox_2">
-        <item>
-         <property name="text">
-          <string>Collection :</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>420</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <layout class="QVBoxLayout" name="listGameLayout">
@@ -85,9 +26,56 @@
          <number>10</number>
         </property>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QComboBox" name="comboBox">
+            <property name="statusTip">
+             <string/>
+            </property>
+            <property name="currentText">
+             <string>Trier par :</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Trier par :</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>aze</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>qsd</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>wxc</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QLabel" name="lNumbergame">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">margin-top:20px;</string>
           </property>
           <property name="text">
            <string/>
@@ -649,7 +637,105 @@ border:0;</string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6"/>
+           <widget class="QWidget" name="w_torrent" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="styleSheet">
+                <string notr="true">max-height: 32px;
+font:26pt;</string>
+               </property>
+               <property name="text">
+                <string>Torrent</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget_8" native="true"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="w_list_install" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QWidget" name="widget_9" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout_12">
+                <item>
+                 <widget class="QLabel" name="label_13">
+                  <property name="styleSheet">
+                   <string notr="true">max-height: 32px;
+font:26pt;</string>
+                  </property>
+                  <property name="text">
+                   <string>WebSite</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBox_2">
+                  <item>
+                   <property name="text">
+                    <string>Site 1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Site 2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Site 3</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QPushButton" name="pushButton_3">
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_2">
+                    <property name="text">
+                     <string>Delete</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="styleSheet">
+                <string notr="true">max-height: 32px;
+font:26pt;</string>
+               </property>
+               <property name="text">
+                <string>Install</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget_2" native="true"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>

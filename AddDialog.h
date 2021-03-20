@@ -32,8 +32,6 @@ private slots:
 
     Game on_buttonBox_accepted();
 
-    void on_leName_textChanged(const QString &arg1);
-
 private:
     Ui::AddDialog *ui;
 };

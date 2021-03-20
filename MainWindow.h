@@ -111,9 +111,8 @@ private:
 
     quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
 
-public slots:
 
-    void startProgram();
+public slots:
 
     void loadList();
 

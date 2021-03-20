@@ -54,9 +54,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Set property of item in twUserInfo
     QTabWidget *m_tabWidget = ui->twUserGame;
-    m_tabWidget->setTabText(0, "Main information");
-    m_tabWidget->setTabText(1, "Game information");
-    m_tabWidget->setTabText(2, "Other");
+    m_tabWidget->setTabText(0, "Game");
+    m_tabWidget->setTabText(1, "Torrent");
+    m_tabWidget->setTabText(2, "Network");
 
     loadgameFromFile();
     int count = 0;
@@ -364,11 +364,13 @@ void MainWindow::on_pbLaunch_clicked()
         Game *game = selectGame;
         game->setTimePlayed(selectGame->timePlayed() + timeDiff);
         game->setDateLastUse(value.toString());
+        QList<QString> list;
         for(int i = 0; i < ui->lwType->count(); i++){
-            //QList<QString>
+
+            list.append(ui->lwType->item(i)->text());
 
         }
-        //game->setTypes()
+        game->setTypes(list);
 
         reloadGame();
         saveGame(selectGame);
