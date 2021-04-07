@@ -28,47 +28,51 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Trier par :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QComboBox" name="comboBox">
             <property name="statusTip">
              <string/>
             </property>
             <property name="currentText">
-             <string>Trier par :</string>
+             <string>Nom</string>
             </property>
             <item>
              <property name="text">
-              <string>Trier par :</string>
+              <string>Nom</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>aze</string>
+              <string>Derniere utilisation</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>qsd</string>
+              <string>Type</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>wxc</string>
+              <string>Temps de jeu</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Date d'installation</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Favori</string>
              </property>
             </item>
            </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </item>
@@ -138,7 +142,7 @@ padding: 10px;</string>
          <string notr="true"/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabUserInfo">
          <property name="toolTip">
@@ -298,27 +302,17 @@ font: italic;</string>
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QTextEdit" name="teDesc">
+                  <widget class="QLabel" name="leDesc">
                    <property name="styleSheet">
-                    <string notr="true">font: 'Playfair Display', 'serif';</string>
+                    <string notr="true">font: 16pt  'Playfair Display', 'serif';</string>
+                   </property>
+                   <property name="text">
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_4">
+                  <spacer name="verticalSpacer_2">
                    <property name="orientation">
                     <enum>Qt::Vertical</enum>
                    </property>
@@ -651,7 +645,7 @@ font:26pt;</string>
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="widget_8" native="true"/>
+              <widget class="QWidget" name="wTransmission" native="true"/>
              </item>
             </layout>
            </widget>
@@ -743,6 +737,7 @@ font:26pt;</string>
          <attribute name="title">
           <string>Page</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_8"/>
         </widget>
        </widget>
       </item>
@@ -756,7 +751,7 @@ font:26pt;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">

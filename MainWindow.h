@@ -53,6 +53,8 @@ public:
     QFile file;
     QList<QString> favList;
 
+    void loadTransmission();
+
 
 private slots:
 
@@ -66,7 +68,7 @@ private slots:
 
     void on_pbAddType_clicked();
 
-    void on_teDesc_textChanged();
+    void on_comboBox_activated(const QString &arg1);
 
 private:
 

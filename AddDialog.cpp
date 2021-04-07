@@ -39,6 +39,7 @@ AddDialog::AddDialog(QWidget *parent) :
     }
     //LeName
     ui->leName->setPlaceholderText("Name : ");
+    ui->leName->setEnabled(false);
     //ListType
     QFile file("Type.txt");
 
@@ -73,6 +74,7 @@ QMap<QString, QString> AddDialog::on_pbOpen_clicked()
 
         p = file.absoluteFilePath();
         d = p.section("/",0,-2);
+        n = p.section("/", -1).toUtf8();
 
         //d.replace(" ", "\\ ");
 
@@ -101,8 +103,6 @@ QString AddDialog::on_teDesc_textChanged()
 Game AddDialog::on_buttonBox_accepted()
 {
     QString desc = on_teDesc_textChanged();
-
-    n = ui->leName->text();
 
     for(int i = 0; i < ui->lwListType->count(); i++){
         if(ui->lwListType->item(i)->checkState() == Qt::Checked){

@@ -24,6 +24,9 @@ SOURCES += \
     Settings/FavoriDialog.cpp \
     Settings/Settings.cpp \
     Settings/SettingsDialog.cpp \
+    Torrent/Torrent.cpp \
+    Torrent/TorrentFile.cpp \
+    TransmissionProcess.cpp \
     WorkerThread.cpp \
     main.cpp \
     MainWindow.cpp
@@ -38,6 +41,9 @@ HEADERS += \
     Settings/FavoriDialog.h \
     Settings/Settings.h \
     Settings/SettingsDialog.h \
+    Torrent/Torrent.h \
+    Torrent/TorrentFile.h \
+    TransmissionProcess.h \
     WorkerThread.h
 
 FORMS += \

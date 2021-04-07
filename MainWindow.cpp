@@ -8,11 +8,11 @@
 #include "Settings/SettingsDialog.h"
 #include "Settings/FavoriDialog.h"
 #include "WorkerThread.h"
+#include "TransmissionProcess.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QLineEdit>
-#include <QComboBox>
 #include <QDate>
 #include <QTextEdit>
 #include <QFormLayout>
@@ -35,6 +35,8 @@
 #include <iostream>
 #include <QFont>
 #include <QStandardItemModel>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -43,9 +45,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->teDesc->setFrameStyle(QFrame::NoFrame);
+    ui->leDesc->setFrameStyle(QFrame::NoFrame);
     ui->lwType->setFrameStyle(QFrame::NoFrame);
-    loadList();
 
     //Right click to lwGame
     wid = ui->listWidget;
@@ -88,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     listMenu->addMenu(itemMenu);
     listMenu->addMenu(collectionMenu);
     collectionMenu->setEnabled(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -209,7 +211,6 @@ void MainWindow::saveGame(Game *game){
     QTextStream stream(&file);
     stream << QJsonDocument(jsonArray).toJson();
     file.close();
-
 }
 
 void MainWindow::loadgameFromFile(){
@@ -254,6 +255,7 @@ void MainWindow::loadList(){
         ui->listWidget->addItem(it);
     }
     ui->listWidget->sortItems();
+    loadFavList();
 }
 
 
@@ -296,7 +298,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             //File tabInfoUser
             ui->lLastUse->setText(object.toObject().value("dateLastUse").toString());
             ui->lName->setText(object.toObject().value("name").toString());
-            ui->teDesc->setText(object.toObject().value("desc").toString());
+            ui->leDesc->setText(object.toObject().value("desc").toString());
             ui->lTimePlayed->setText(QString::number(hour) + ":" + QString::number(min) + ":" + QString::number(sec));
             if(object.toObject().value("dateLastUse").toString() == "")
                 ui->lLastUse->setText("Never used");
@@ -328,6 +330,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_pbLaunch_clicked()
 {
     qDebug() << "Launch";
+
+    if(!selectGame)
+        return;
 
     QString program =  selectGame->path();
     QStringList arguments;
@@ -437,10 +442,14 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
         auto item = ui->listWidget->itemAt(pos);
         for(auto itemG : listGame){
             if(item->text() == itemG->name()){
+                qDebug() << "IF";
                 selectGame = itemG;
+                on_pbDel_clicked();
+                reloadGame();
+                loadList();
             }
         }
-        on_pbDel_clicked();
+
     }
 
     if(selectedAction == action_itemFavori_itemMenu){
@@ -523,15 +532,11 @@ void MainWindow::on_pbAddType_clicked()
 void MainWindow::saveDescGame(){
 
     Game *game = selectGame;
-    game->setDesc(ui->teDesc->toPlainText());
+    game->setDesc(ui->leDesc->text());
     reloadGame();
     loadgameFromFile();
     loadList();
 
-}
-void MainWindow::on_teDesc_textChanged()
-{
-    descChange.append(ui->teDesc->toPlainText());
 }
 
 void MainWindow::displayCollectionInLayout(Collection *collection){
@@ -544,20 +549,29 @@ void MainWindow::displayCollectionInLayout(Collection *collection){
 }
 
 void MainWindow::loadFavList(){
-
     int count = 0;
-    for(auto i : favList){
-        for(int i = 0; i < ui->listWidget->count(); i++){
-
-            if(ui->listWidget->item(count)->text() == i){
-                qDebug() << "trouver item" + QString::number(i);
+    for(int i = 0; i < ui->listWidget->count(); i++){
+        for(auto is : favList){
+            if(is.isNull())
+                continue;
+            if(ui->listWidget->item(count)->text() == is){
                 ui->listWidget->item(count)->setIcon(QIcon("star.png"));
             }
-
         }
-
         count++;
     }
-
 }
 
+void MainWindow::loadTransmission(){
+
+    TransmissionProcess tp;
+    //QFunctionPointer p = tp.launch();
+    //QFuture<void> future = QtConcurrent::run(p);
+}
+
+void MainWindow::on_comboBox_activated(const QString &arg1)
+{
+    qDebug() << arg1;
+
+
+}
