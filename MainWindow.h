@@ -4,7 +4,8 @@
 #include "Game.h"
 #include "AddDialog.h"
 #include "Settings/Settings.h"
-#include "Collection/Collection.h"
+#include "GameInstall/GameInstall.h"
+
 
 #include <QMainWindow>
 #include <QLineEdit>
@@ -36,13 +37,13 @@ public:
 
     QList<Game*> listGame;
 
-    QList<Collection*> listCollection;
-
     ~MainWindow();
 
     void saveGame(Game *game);
 
     void loadgameFromFile();
+
+    void loadGameInstallFromFile();
 
     Game *selectGame;
 
@@ -52,6 +53,8 @@ public:
     QSettings settings;
     QFile file;
     QList<QString> favList;
+
+    QList<GameInstall*> listGameInstall;
 
     void loadTransmission();
 
@@ -70,6 +73,16 @@ private slots:
 
     void on_comboBox_activated(const QString &arg1);
 
+    void on_actionParametre_triggered();
+
+    void on_lwGameInstall_itemClicked(QListWidgetItem *item);
+
+    void on_lwGameInstall_customContextMenuRequested(const QPoint &pos);
+
+    void on_pbChangeImage_clicked();
+
+    void on_lCouverturel_customContextMenuRequested(const QPoint &pos);
+
 private:
 
     QString f;
@@ -83,40 +96,40 @@ private:
 
     QMenu *listMenu = new QMenu;
     QMenu *itemMenu = new QMenu;
-    QMenu *appMenu = new QMenu;
-    QMenu *collectionMenu = new QMenu;
+    QMenu *itemInstallMenu = new QMenu;
+    QMenu *couvertureMenu = new QMenu;
 
     QAction *action_itemAdd_listMenu = new QAction("Add");
     QAction *action_itemReload_listMenu = new QAction("Reload");
 
     QAction *action_itemDel_itemMenu = new QAction("Delete");
     QAction *action_itemFavori_itemMenu = new QAction("Favori");
-    QAction *action_itemRemoveFromCollection_itemMenu = new QAction("Supprimer de la collection");
     QAction *action_itemProperty_itemMenu = new QAction("Property");
 
-    QAction *action_createCollection_collectionMenu = new QAction("New collection");
-    QAction *action_addToCollection_collectionMenu = new QAction("Add to collection");
-    QAction *action_displayCollection_collectionMenu = new QAction("Afficher cette collection");
-    QAction *action_renameCollection_colectionMenu = new QAction("Renommer collection");
-    QAction *action_deleteCollection_collectionMenu = new QAction("Supprimer collection");
-    QAction *action_reduceCollection_collectionMenu = new QAction("Reduire");
-    QAction *action_developAllCollections_collectionMenu = new QAction("Afficher toutes les collections");
-    QAction *action_reduceAllCollections_collectionMenu = new QAction("Reduire toutes les collections");
+    QAction *action_itemAdd_itemInstallMenu = new QAction("Add");
+    QAction *action_itemDel_itemInstallMenu = new QAction("Delete");
+    QAction *action_itemReload_itemInstallMenu = new QAction("Reload");
+    QAction *action_itemAddList_itemInstallMenu = new QAction("Ajouté à \"Installer rapidement\"");
+
+    QAction *action_itemChange_couvertureMenu = new QAction("Changer");
 
     qint64 dirSize(QString dirPath);
 
     QString formatSize(qint64 size);
 
-    void displayCollectionInLayout(Collection *collection);
-
     void reloadGame();
 
     quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
 
+    void closeEvent (QCloseEvent *event);
+
+    void saveFavori();
 
 public slots:
 
     void loadList();
+
+    void loadListGameInstall();
 
     //void displayGame(Game *game);
 

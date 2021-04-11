@@ -4,11 +4,14 @@
 #include "MyThread.h"
 #include "Game.h"
 #include "Dialog/SelectTypeDialog.h"
-#include "Collection/Collection.h"
 #include "Settings/SettingsDialog.h"
 #include "Settings/FavoriDialog.h"
 #include "WorkerThread.h"
 #include "TransmissionProcess.h"
+#include "Settings/MainSettingsDialog.h"
+#include "GameInstall/AddGameInstallDialog.h"
+#include "GameInstall/GameInstallManager.h"
+#include "Dialog/ChangeCouvertureDIalog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -37,6 +40,8 @@
 #include <QStandardItemModel>
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
+#include <QStyle>
+#include <QPixmap>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -53,18 +58,14 @@ MainWindow::MainWindow(QWidget *parent)
     wid->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(wid, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_listWidget_customContextMenuRequested(const QPoint&)));
 
-    //Set property of item in twUserInfo
-    QTabWidget *m_tabWidget = ui->twUserGame;
-    m_tabWidget->setTabText(0, "Game");
-    m_tabWidget->setTabText(1, "Torrent");
-    m_tabWidget->setTabText(2, "Network");
-
     loadgameFromFile();
     int count = 0;
-    for(int i = 0; i < ui->listWidget->count(); i++){
+    for(int i = 0; i < listGame.count(); i++){
         count++;
     }
     ui->lNumbergame->setText(QString::number(count));
+
+    loadListGameInstall();
 
     listMenu->setTitle("Tableau");
     listMenu->addAction(action_itemAdd_listMenu);
@@ -73,22 +74,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     itemMenu->setTitle("Game");
     itemMenu->addAction(action_itemFavori_itemMenu);
-    itemMenu->addAction(action_itemRemoveFromCollection_itemMenu);
     itemMenu->addAction(action_itemProperty_itemMenu);
 
-    collectionMenu->setTitle("Collection");
-    collectionMenu->addAction(action_createCollection_collectionMenu);
-    collectionMenu->addAction(action_addToCollection_collectionMenu);
-    collectionMenu->addAction(action_renameCollection_colectionMenu);
-    collectionMenu->addAction(action_deleteCollection_collectionMenu);
-    collectionMenu->addAction(action_reduceCollection_collectionMenu);
-    collectionMenu->addAction(action_displayCollection_collectionMenu);
-    collectionMenu->addAction(action_reduceAllCollections_collectionMenu);
-    collectionMenu->addAction(action_developAllCollections_collectionMenu);
+    itemInstallMenu->setTitle("Install");
+    itemInstallMenu->addAction(action_itemAdd_itemInstallMenu);
+    itemInstallMenu->addAction(action_itemReload_itemInstallMenu);
+    itemInstallMenu->addAction(action_itemAddList_itemInstallMenu);
+    itemInstallMenu->addAction(action_itemDel_itemInstallMenu);
+
+    couvertureMenu->addAction(action_itemChange_couvertureMenu);
 
     listMenu->addMenu(itemMenu);
-    listMenu->addMenu(collectionMenu);
-    collectionMenu->setEnabled(false);
+
+    QWidget *wid2;
+    wid2 = ui->lwGameInstall;
+    wid2->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(wid2, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lwGameInstall_customContextMenuRequested(const QPoint&)));
+
+    QWidget *wid3;
+    wid3 = ui->lCouverturel;
+    wid3->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(wid2, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lCouverturel_customContextMenuRequested(const QPoint &pos)));
+
 
 }
 
@@ -106,8 +113,8 @@ void MainWindow::on_pbAdd_clicked()
 void MainWindow::reloadGame(){
 
     selectGame->types();
-    if(selectGame == nullptr)
-        QMessageBox::warning(this, "Warning", selectGame->name());
+    if(!selectGame)
+        return;
 
     QFile file("save.json");
 
@@ -143,8 +150,8 @@ void MainWindow::reloadGame(){
 void MainWindow::on_pbDel_clicked()
 {
 
-    if(selectGame == nullptr)
-        QMessageBox::warning(this, "Warning", selectGame->name());
+    if(!selectGame)
+        return;
 
     QFile file("save.json");
 
@@ -242,9 +249,6 @@ void MainWindow::loadgameFromFile(){
 
 void MainWindow::loadList(){
 
-    //Destroy all widget and layout to clean dashboard
-    qDeleteAll(ui->listGameLayout->findChildren<QObject *>(QString(), Qt::FindDirectChildrenOnly));
-
     listGame.clear();
 
     loadgameFromFile();
@@ -258,6 +262,42 @@ void MainWindow::loadList(){
     loadFavList();
 }
 
+void MainWindow::loadGameInstallFromFile(){
+
+    QFile file("saveGameInstall.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
+    file.close();
+
+    for(QJsonValue value : jsonArray){
+        if(!value.isObject())
+            continue;
+        GameInstall *gameInstall = new GameInstall();
+
+        gameInstall->fromJson(value.toObject());
+
+        listGameInstall.append(gameInstall);
+    }
+}
+
+void MainWindow::loadListGameInstall(){
+
+    listGameInstall.clear();
+    loadGameInstallFromFile();
+
+    ui->lwGameInstall->clear();
+    QListWidgetItem *it;
+    for(GameInstall *gameInstall : listGameInstall){
+        it = new QListWidgetItem(gameInstall->name());
+        ui->lwGameInstall->addItem(it);
+    }
+    ui->lwGameInstall->sortItems();
+
+}
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
@@ -290,7 +330,6 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 hour +=1;
                 min -= 60;
             }
-
             //Get size of folder
             QString directoryPath = object.toObject().value("directory").toString();
             qint64 size = dirSize(directoryPath);
@@ -298,16 +337,19 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             //File tabInfoUser
             ui->lLastUse->setText(object.toObject().value("dateLastUse").toString());
             ui->lName->setText(object.toObject().value("name").toString());
+            ui->leDesc->setWordWrap(1);
             ui->leDesc->setText(object.toObject().value("desc").toString());
+
             ui->lTimePlayed->setText(QString::number(hour) + ":" + QString::number(min) + ":" + QString::number(sec));
             if(object.toObject().value("dateLastUse").toString() == "")
                 ui->lLastUse->setText("Never used");
             else
-                ui->lLastUse->setText(object.toObject().value("date").toString());
+                ui->lLastUse->setText(object.toObject().value("dateLastUse").toString());
 
             ui->lDate->setText(object.toObject().value("date").toString());
             ui->lDir->setText(object.toObject().value("directory").toString());
             ui->lPath->setText(object.toObject().value("path").toString());
+            ui->lPath->setWordWrap(1);
             ui->lwType->clear();
             QListWidgetItem *it;
             for(int i = 0; i < object.toObject().value("type").toArray().count(); i++){
@@ -315,13 +357,60 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 ui->lwType->addItem(it);
             }
             ui->lSizeFolder->setText(formatSize(size));
+            QPixmap *pixPicture = new QPixmap(object.toObject().value("linkPicture").toString());
+            *pixPicture = pixPicture->scaled(ui->lImage->size(), Qt::KeepAspectRatio);
+            ui->lImage->setPixmap(*pixPicture);
 
+            QPixmap *pixCouverture = new QPixmap(object.toObject().value("linkCouverture").toString());
+            *pixCouverture = pixCouverture->scaled(ui->lCouverturel->size(), Qt::KeepAspectRatio);
+            ui->lCouverturel->setPixmap(*pixCouverture);
+
+            //Set image
+            QString aze = "C:/Users/p1err0/Documents/build-Project-Desktop_Qt_5_12_6_MSVC2015_64bit-Debug/debug/img/cyberpunk.jpg";
+            for(int i = 0; i < 5; i++){
+                QPixmap *pixi = new QPixmap;
+                QLabel *l = new QLabel;
+                l->setPixmap(*pixi);
+                ui->layouListScreen->addWidget(l);
+            }
             //Set the current game
 
             for(auto game : listGame){
                 if(game->name() == item->text()){
                     selectGame = game;
                 }
+            }
+        }
+    }
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_lwGameInstall_itemClicked(QListWidgetItem *item)
+{
+    ui->stackedWidget->setCurrentIndex(1);
+
+    QFile file("saveGameInstall.json");
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream stream(&file);
+    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
+    file.close();
+
+    for(auto object : jsonArray){
+        if(!object.isObject())
+            continue;
+
+        if(item->text() == object.toObject().value("name").toString()){
+            ui->lNameInstall->setText(object.toObject().value("name").toString());
+            ui->lFolderInstall->setText(object.toObject().value("folder").toString());
+            ui->lSizeInstall->setNum(object.toObject().value("size").toInt());
+
+            if(object.toObject().value("install").toBool()){
+                ui->cbInstall->setCheckState(Qt::CheckState(true));
+            } else {
+                ui->cbInstall->setCheckState(Qt::CheckState(false));
             }
         }
     }
@@ -409,19 +498,22 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
     QListWidgetItem* pointedItem = ui->listWidget->itemAt(pos);
 
     QAction* selectedAction;
-    //Add item
-    if(!pointedItem)
-        itemMenu->setEnabled(false);
 
     selectedAction = listMenu->exec(globalpos);
+
+    if(!pointedItem)
+        action_itemDel_itemMenu->setEnabled(false);
 
     if(selectedAction == action_itemAdd_listMenu) {
         AddDialog *addDialog = new AddDialog;
         addDialog->show();
+        return;
     }
 
-    if(selectedAction == action_itemReload_listMenu)
+    if(selectedAction == action_itemReload_listMenu){
         loadList();
+        return;
+    }
 
     if(selectedAction == action_itemProperty_itemMenu) {
         Game *game;
@@ -436,20 +528,7 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
         on_pbDel_clicked();
         loadgameFromFile();
         loadList();
-    }
-
-    if(selectedAction == action_itemDel_itemMenu) {
-        auto item = ui->listWidget->itemAt(pos);
-        for(auto itemG : listGame){
-            if(item->text() == itemG->name()){
-                qDebug() << "IF";
-                selectGame = itemG;
-                on_pbDel_clicked();
-                reloadGame();
-                loadList();
-            }
-        }
-
+        return;
     }
 
     if(selectedAction == action_itemFavori_itemMenu){
@@ -464,21 +543,26 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
             favList = fd->delFav(favList, pointedItem->text());
             pointedItem->setIcon(QIcon());
             qDebug() << favList;
-
         }
+        return;
     }
 
-    if(selectedAction == action_createCollection_collectionMenu){
-        Collection *collection = new Collection("");
-        collection->createCollection();
-        if(collection->getName().isEmpty())
-            return;
-        listCollection.append(collection);
+    if(selectedAction == action_itemDel_itemMenu) {
+        auto item = ui->listWidget->itemAt(pos);
+        for(auto itemG : listGame){
+            if(item->text() == itemG->name()){
+                selectGame = itemG;
+                on_pbDel_clicked();
 
-        displayCollectionInLayout(collection);
+            }
+        }
+        reloadGame();
+        loadList();
+        return;
     }
 
-    itemMenu->setEnabled(true);
+    action_itemDel_itemMenu->setEnabled(true);
+    return;
 }
 //Calculate and convert size of folder
 qint64 MainWindow::dirSize(QString dirPath) {
@@ -539,15 +623,6 @@ void MainWindow::saveDescGame(){
 
 }
 
-void MainWindow::displayCollectionInLayout(Collection *collection){
-
-    QListWidget *wCollection = new QListWidget;
-    QLabel *lNameCollection = new QLabel(collection->getName());
-
-    ui->layoutCollection->addWidget(lNameCollection);
-    ui->layoutCollection->addWidget(wCollection);
-}
-
 void MainWindow::loadFavList(){
     int count = 0;
     for(int i = 0; i < ui->listWidget->count(); i++){
@@ -572,6 +647,143 @@ void MainWindow::loadTransmission(){
 void MainWindow::on_comboBox_activated(const QString &arg1)
 {
     qDebug() << arg1;
+    QMessageBox::warning(this, "Warning", "Function not implemented yet");
+}
+
+void MainWindow::on_actionParametre_triggered()
+{
+    MainSettingsDialog *s = new MainSettingsDialog;
+
+    s->show();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event){
+
+    saveFavori();
+}
+
+void MainWindow::saveFavori(){
+    FavoriDialog fav;
+    QFile file("favori.json");
+    QList<QString> n_list;
+    QJsonArray jsonArray;
+
+    if(!file.open(QIODevice::ReadOnly))
+        return;
+
+    for(int i = 0; i < ui->listWidget->count(); i++){
+        if(!ui->listWidget->item(i)->icon().isNull())
+            n_list << ui->listWidget->item(i)->text();
+    }
+
+    file.remove();
+    QJsonObject json;
+    for(auto i : n_list){
+        json.insert("fav", i);
+        jsonArray.append(json);
+    }
+
+    jsonArray.append(json);
+
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream stream(&file);
+    stream << QJsonDocument(jsonArray).toJson();
+    file.close();
+}
+
+void MainWindow::on_lwGameInstall_customContextMenuRequested(const QPoint &pos)
+{
+    qDebug() << "ca rentre";
+    QPoint globalpos = ui->lwGameInstall->mapToGlobal(pos);
+
+    QListWidgetItem* pointedItem = ui->lwGameInstall->itemAt(pos);
+
+    QAction* selectedAction;
+
+    selectedAction = itemInstallMenu->exec(globalpos);
+
+    if(!pointedItem){
+        action_itemDel_itemInstallMenu->setEnabled(false);
+        action_itemAddList_itemInstallMenu->setEnabled(false);
+    }
+    if(selectedAction == action_itemAdd_itemInstallMenu){
+        AddGameInstallDialog *ad = new AddGameInstallDialog;
+        ad->show();
+    }
+
+    if(selectedAction == action_itemReload_itemInstallMenu){
+        qDebug() << "Reload";
+       loadListGameInstall();
+    }
+
+    action_itemDel_itemInstallMenu->setEnabled(true);
+    action_itemAddList_itemInstallMenu->setEnabled(true);
+
+}
+
+void MainWindow::on_pbChangeImage_clicked()
+{
+    QFileInfo file = QFileDialog::getOpenFileName(this, "Open", QApplication::applicationDirPath()+"\\img","*");
+
+    QPixmap pix;
+    pix.load(file.absoluteFilePath());
+    if(pix.isNull())
+        return;
+
+    pix = pix.scaled(ui->lImage->size(), Qt::KeepAspectRatio);
+
+    ui->lImage->setPixmap(pix);
 
 
+    Game *game = selectGame;
+    QList<QString> list;
+    for(int i = 0; i < ui->lwType->count(); i++){
+
+        list.append(ui->lwType->item(i)->text());
+
+    }
+    game->setTypes(list);
+    game->setLinkPicture(file.absoluteFilePath());
+    reloadGame();
+    saveGame(game);
+    loadgameFromFile();
+    loadList();
+}
+
+void MainWindow::on_lCouverturel_customContextMenuRequested(const QPoint &pos)
+{
+    qDebug() << "ca rentre";
+    QPoint globalpos = ui->lCouverturel->mapToGlobal(pos);
+
+    QAction* selectedAction;
+    selectedAction = couvertureMenu->exec(globalpos);
+
+    if(selectedAction == action_itemChange_couvertureMenu){
+        QFileInfo file = QFileDialog::getOpenFileName(this, "Open", QApplication::applicationDirPath()+"\\img","*");
+
+        QPixmap pix;
+        pix.load(file.absoluteFilePath());
+        if(pix.isNull())
+            return;
+
+        pix = pix.scaled(ui->lImage->size(), Qt::KeepAspectRatio);
+
+        ui->lCouverturel->setPixmap(pix);
+
+        Game *game = selectGame;
+        QList<QString> list;
+        for(int i = 0; i < ui->lwType->count(); i++){
+
+            list.append(ui->lwType->item(i)->text());
+
+        }
+        game->setTypes(list);
+        game->setLinkCouverture(file.absoluteFilePath());
+        reloadGame();
+
+        saveGame(game);
+        loadgameFromFile();
+        loadList();
+    }
 }

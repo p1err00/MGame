@@ -16,6 +16,7 @@ class Game
 public:
     Game(QString name, QString directory, QString path, QString date, QString desc, QList<QString> types);
     Game(QString name, QString directory, QString path, QString date, int timePlayed, QString dateLastUse, QString desc, QList<QString> types);
+    Game(QString name, QString directory, QString path, QString date, int timePlayed, QString dateLastUse, QString desc, QList<QString> types, QString linkPicture, QString linkCouverture);
     void addTimePlayed(int timePlayed);
     void addDateLastUse(QString dateLastUse);
 
@@ -28,6 +29,8 @@ public:
     void setDesc(QString desc);
     void setTypes(QList<QString> list);
     void setTimePlayed(int timePlayed);
+    void setLinkPicture(QString linkPicture);
+    void setLinkCouverture(QString linkCouverture);
 
     Game();
 
@@ -39,6 +42,8 @@ public:
     QString dateLastUse() const;
     QString desc() const;
     QList<QString> types() const;
+    QString linkPicture();
+    QString linkCouverture() const;
 
 private:
     int _timePlayed;
@@ -48,6 +53,8 @@ private:
     QString _date;
     QString _dateLastUse;
     QString _desc;
+    QString _linkPicture;
+    QString _linkCouverture;
     QList<QString> _types;
     QDateTime startProcess;
 
@@ -57,9 +64,6 @@ public slots:
 
     QJsonObject toJson();
 
-private slots:
-
-public slots:
     QJsonObject changeTypes(QJsonObject json, QList<QString> list);
 
     QJsonObject changeDesc(QJsonObject json, QString desc);

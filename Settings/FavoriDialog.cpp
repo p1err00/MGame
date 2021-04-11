@@ -12,11 +12,6 @@ QList<QString> FavoriDialog::addFav(QList<QString> favList, QString name){
 }
 QList<QString> FavoriDialog::delFav(QList<QString> favList, QString name){
 
-    for(int i = 0; i < favList.size(); i++){
-        if(favList.at(i) == name)
-            favList.removeAt(i);
-    }
-
     QFile file("favori.json");
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -41,6 +36,10 @@ QList<QString> FavoriDialog::delFav(QList<QString> favList, QString name){
         count++;
     }
 
+    for(int i = 0; i < favList.size(); i++){
+        if(favList.at(i) == name)
+            favList.removeAt(i);
+    }
 
     return favList;
 }

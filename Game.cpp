@@ -14,7 +14,8 @@ Game::Game(QString name, QString directory, QString path, QString date, QString 
     _types(types)
 {
     _timePlayed = 0.0;
-
+    _linkPicture = "";
+    _linkCouverture = "";
 }
 
 Game::Game(QString name, QString directory, QString path, QString date, int timePlayed, QString dateLastUse, QString desc, QList<QString> types) :
@@ -26,6 +27,22 @@ Game::Game(QString name, QString directory, QString path, QString date, int time
     _desc(desc),
     _timePlayed(timePlayed),
     _types(types)
+{
+    _linkPicture = "";
+    _linkCouverture = "";
+}
+
+Game::Game(QString name, QString directory, QString path, QString date, int timePlayed, QString dateLastUse, QString desc, QList<QString> types, QString linkPicture, QString linkCouverture) :
+    _name(name),
+    _directory(directory),
+    _path(path),
+    _date(date),
+    _dateLastUse(dateLastUse),
+    _desc(desc),
+    _timePlayed(timePlayed),
+    _types(types),
+    _linkPicture(linkPicture),
+    _linkCouverture(linkCouverture)
 {
 
 }
@@ -66,7 +83,12 @@ QList<QString> Game::types() const
 {
     return _types;
 }
-
+QString Game::linkPicture(){
+    return _linkPicture;
+}
+QString Game::linkCouverture() const{
+    return _linkCouverture;
+}
 //Change time played
 void Game::addTimePlayed(int timePlayed){
 
@@ -91,6 +113,8 @@ QJsonObject Game::toJson(){
     json.insert("dateLastUse", dateLastUse());
     json.insert("desc", desc());
     json.insert("timePlayed", timePlayed());
+    json.insert("linkPicture", linkPicture());
+    json.insert("linkCouverture", linkCouverture());
     int count = 0;
     QJsonArray t;
     for(auto item : this->types()){
@@ -126,14 +150,23 @@ void Game::setTypes(QList<QString> types){
 void Game::setTimePlayed(int timePlayed){
     _timePlayed = timePlayed;
 }
+void Game::setLinkPicture(QString linkPicture){
+    _linkPicture = linkPicture;
+}
+void Game::setLinkCouverture(QString linkCouverture){
+    _linkCouverture = linkCouverture;
+}
 void Game::fromJson(QJsonObject json){
 
     this->setName(json.value("name").toString());
     this->setDirectory(json.value("directory").toString());
+    this->setDate(json.value("date").toString());
     this->setPath(json.value("path").toString());
     this->setDateLastUse(json.value("dateLastUse").toString());
     this->setDesc(json.value("desc").toString());
     this->setTimePlayed(json.value("timePlayed").toInt());
+    this->setLinkPicture(json.value("linkPicture").toString());
+    this->setLinkCouverture(json.value("linkCouverture").toString());
     QList<QString> list;
     for(auto item : json.value("type").toString())
         list.append(item);

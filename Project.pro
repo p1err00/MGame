@@ -17,11 +17,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     AddDialog.cpp \
-    Collection/Collection.cpp \
+    Dialog/ChangeCouvertureDIalog.cpp \
     Dialog/SelectTypeDialog.cpp \
     Game.cpp \
+    GameInstall/AddGameInstallDialog.cpp \
+    GameInstall/GameInstall.cpp \
+    GameInstall/GameInstallManager.cpp \
     MyThread.cpp \
     Settings/FavoriDialog.cpp \
+    Settings/MainSettingsDialog.cpp \
+    Settings/PreferenceSettingsDialog.cpp \
     Settings/Settings.cpp \
     Settings/SettingsDialog.cpp \
     Torrent/Torrent.cpp \
@@ -33,12 +38,17 @@ SOURCES += \
 
 HEADERS += \
     AddDialog.h \
-    Collection/Collection.h \
+    Dialog/ChangeCouvertureDIalog.h \
     Dialog/SelectTypeDialog.h \
     Game.h \
+    GameInstall/AddGameInstallDialog.h \
+    GameInstall/GameInstall.h \
+    GameInstall/GameInstallManager.h \
     MainWindow.h \
     MyThread.h \
     Settings/FavoriDialog.h \
+    Settings/MainSettingsDialog.h \
+    Settings/PreferenceSettingsDialog.h \
     Settings/Settings.h \
     Settings/SettingsDialog.h \
     Torrent/Torrent.h \
@@ -48,8 +58,12 @@ HEADERS += \
 
 FORMS += \
     AddDialog.ui \
+    Dialog/ChangeCouvertureDIalog.ui \
     Dialog/SelectTypeDialog.ui \
+    GameInstall/AddGameInstallDialog.ui \
     MainWindow.ui \
+    Settings/MainSettingsDialog.ui \
+    Settings/PreferenceSettingsDialog.ui \
     Settings/SettingsDialog.ui
 
 # Default rules for deployment.

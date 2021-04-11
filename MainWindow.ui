@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>665</height>
+    <height>820</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,731 +17,706 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_7">
+   <layout class="QHBoxLayout" name="horizontalLayout_10">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QVBoxLayout" name="listGameLayout">
+      <property name="topMargin">
+       <number>10</number>
+      </property>
       <item>
-       <layout class="QVBoxLayout" name="listGameLayout">
-        <property name="topMargin">
-         <number>10</number>
+       <widget class="QLabel" name="lNumbergame">
+        <property name="styleSheet">
+         <string notr="true">margin-top:20px;
+font: 16pxt;</string>
         </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Trier par :</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox">
-            <property name="statusTip">
-             <string/>
-            </property>
-            <property name="currentText">
-             <string>Nom</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Nom</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Derniere utilisation</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Type</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Temps de jeu</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Date d'installation</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Favori</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="lNumbergame">
-          <property name="styleSheet">
-           <string notr="true">margin-top:20px;</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="listWidget">
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="cursor" stdset="0">
-           <cursorShape>ArrowCursor</cursorShape>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">min-width: 200px;
-padding: 10px;</string>
-          </property>
-          <property name="showDropIndicator" stdset="0">
-           <bool>false</bool>
-          </property>
-          <property name="dragEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::NoDragDrop</enum>
-          </property>
-          <property name="resizeMode">
-           <enum>QListView::Adjust</enum>
-          </property>
-          <property name="spacing">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="layoutCollection">
-          <property name="topMargin">
-           <number>10</number>
-          </property>
-         </layout>
-        </item>
-       </layout>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="QTabWidget" name="twUserGame">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
+       <widget class="QLabel" name="label_15">
+        <property name="styleSheet">
+         <string notr="true">max-height: 32px;
+font:16pt;</string>
         </property>
-        <property name="toolTip">
+        <property name="text">
+         <string>Trier par :</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox">
+        <property name="statusTip">
          <string/>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
-        <property name="currentIndex">
-         <number>1</number>
+        <property name="currentText">
+         <string>Nom</string>
         </property>
-        <widget class="QWidget" name="tabUserInfo">
-         <property name="toolTip">
-          <string/>
+        <item>
+         <property name="text">
+          <string>Nom</string>
          </property>
-         <attribute name="title">
-          <string>Tab 1</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <item>
-           <widget class="QWidget" name="widget1" native="true">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_9">
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border: 0px;</string>
-               </property>
-               <property name="text">
-                <string>Image du jeu</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="styleSheet">
-                <string notr="true">border: 0px;
+        </item>
+        <item>
+         <property name="text">
+          <string>Derniere utilisation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Type</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Temps de jeu</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Date d'installation</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Favori</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="listWidget">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="cursor" stdset="0">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">min-width: 200px;
+min-height: 100px;
+padding: 10px;</string>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::NoDragDrop</enum>
+        </property>
+        <property name="resizeMode">
+         <enum>QListView::Adjust</enum>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="currentRow">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_16">
+        <property name="styleSheet">
+         <string notr="true">max-height: 32px;
+font:16pt;</string>
+        </property>
+        <property name="text">
+         <string>GameInstall</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="lwGameInstall">
+        <property name="styleSheet">
+         <string notr="true">max-width: 200px;
+min-heigt: 200px;
+padding: 10px;</string>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QWidget" name="widget1" native="true">
+          <property name="styleSheet">
+           <string notr="true">max-width: 170px;</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QLabel" name="lImage">
+             <property name="styleSheet">
+              <string notr="true">min-width: 150px;
+min-height:150px;
+border: 4px dashed #575757;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbChangeImage">
+             <property name="text">
+              <string>Change Image</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="styleSheet">
+              <string notr="true">border: 0px;
 font: 8pt</string>
-               </property>
-               <property name="text">
-                <string>Derniere utilisation :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="lLastUse">
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border: 0px;
+             </property>
+             <property name="text">
+              <string>Derniere utilisation :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lLastUse">
+             <property name="maximumSize">
+              <size>
+               <width>195</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border: 0px;
 padding-left: 25px;
 font: 18pt  'Playfair Display', 'serif';
 font: italic;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_7">
-               <property name="styleSheet">
-                <string notr="true">border: 0px;
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="styleSheet">
+              <string notr="true">border: 0px;
 font: 8pt;</string>
-               </property>
-               <property name="text">
-                <string>Temps joué :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="lTimePlayed">
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border: 0;
+             </property>
+             <property name="text">
+              <string>Temps joué :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lTimePlayed">
+             <property name="maximumSize">
+              <size>
+               <width>195</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border: 0;
 padding-left: 25px;
 font: 18pt  'Playfair Display', 'serif';
 font: italic;</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>353</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbLaunch">
+             <property name="maximumSize">
+              <size>
+               <width>172</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Launch game</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>Launch</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_11" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">max-width: 700px;
+</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_13">
+           <item>
+            <widget class="QLabel" name="lCouverturel">
+             <property name="styleSheet">
+              <string notr="true">min-height: 300px;
+min-width: 600px;
+border: 4px dashed #575757;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lName">
+             <property name="maximumSize">
+              <size>
+               <width>700</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font: 36pt 'Brush Script MT', 'cursive';</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="leDesc">
+             <property name="styleSheet">
+              <string notr="true">font: 16pt  'Playfair Display', 'serif';
+max-width:600px;
+heigh:500px;</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>353</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pbLaunch">
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Launch game</string>
-               </property>
+              <widget class="QWidget" name="widget_4" native="true">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">max-width: 140px;</string>
                </property>
-               <property name="text">
-                <string>Launch</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="widget_5" native="true">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_10">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_3">
-                 <property name="topMargin">
-                  <number>20</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="lName">
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">font: 36pt 'Brush Script MT', 'cursive';</string>
-                   </property>
-                   <property name="text">
-                    <string>Name :</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="leDesc">
-                   <property name="styleSheet">
-                    <string notr="true">font: 16pt  'Playfair Display', 'serif';</string>
-                   </property>
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_7">
-                   <item>
-                    <widget class="QWidget" name="widget_4" native="true">
-                     <property name="styleSheet">
-                      <string notr="true">max-width: 140px;</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout">
-                      <item>
-                       <widget class="QLabel" name="label_2">
-                        <property name="styleSheet">
-                         <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
-                        </property>
-                        <property name="text">
-                         <string>Type :</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QListWidget" name="lwType">
-                        <property name="maximumSize">
-                         <size>
-                          <width>153</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">border-left: 2px solid black;
-padding-left: 10px;</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QPushButton" name="pbAddType">
-                        <property name="maximumSize">
-                         <size>
-                          <width>142</width>
-                          <height>35</height>
-                         </size>
-                        </property>
-                        <property name="toolTip">
-                         <string>Add type</string>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string>Type</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_3" native="true">
-                     <property name="styleSheet">
-                      <string notr="true">max-width: 500px;</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_11">
-                      <item>
-                       <widget class="QLabel" name="label_14">
-                        <property name="styleSheet">
-                         <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';
-border:0;</string>
-                        </property>
-                        <property name="text">
-                         <string>Infos :</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QWidget" name="widget" native="true">
-                        <property name="styleSheet">
-                         <string notr="true">border:0;</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_5">
-                         <item>
-                          <widget class="QLabel" name="label_8">
-                           <property name="maximumSize">
-                            <size>
-                             <width>500</width>
-                             <height>25</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-font: 8pt;
-padding-top: 10px;</string>
-                           </property>
-                           <property name="text">
-                            <string>Date d'installation :</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="lDate">
-                           <property name="maximumSize">
-                            <size>
-                             <width>525</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-padding-left: 25px;
-font: 14pt  'Playfair Display', 'serif';
-font: italic;</string>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="label_9">
-                           <property name="maximumSize">
-                            <size>
-                             <width>500</width>
-                             <height>25</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-font: 8pt;
-padding-top: 10px;</string>
-                           </property>
-                           <property name="text">
-                            <string>repertoir :</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="lDir">
-                           <property name="maximumSize">
-                            <size>
-                             <width>525</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-padding-left: 25px;
-font: 14pt  'Playfair Display', 'serif';
-font: italic;</string>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="label_10">
-                           <property name="maximumSize">
-                            <size>
-                             <width>500</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-font: 8pt;
-padding-top: 10px;</string>
-                           </property>
-                           <property name="text">
-                            <string>Chemin :</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="lPath">
-                           <property name="maximumSize">
-                            <size>
-                             <width>525</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-padding-left: 25px;
-font: 14pt  'Playfair Display', 'serif';
-font: italic;</string>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="label_11">
-                           <property name="maximumSize">
-                            <size>
-                             <width>500</width>
-                             <height>20</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-font: 8pt;
-padding-top: 10px;</string>
-                           </property>
-                           <property name="text">
-                            <string>Taille du dossier :</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="lSizeFolder">
-                           <property name="maximumSize">
-                            <size>
-                             <width>525</width>
-                             <height>45</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">border: 0px;
-padding-left: 25px;
-font: 14pt  'Playfair Display', 'serif';
-font: italic;</string>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                      <item>
-                       <spacer name="verticalSpacer_3">
-                        <property name="orientation">
-                         <enum>Qt::Vertical</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>40</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <widget class="QLabel" name="label_6">
-                        <property name="styleSheet">
-                         <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';
-border:0;</string>
-                        </property>
-                        <property name="text">
-                         <string>Options :</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_4"/>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_3">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QWidget" name="widget_6" native="true">
-                 <layout class="QVBoxLayout" name="verticalLayout_8">
-                  <item>
-                   <widget class="QLabel" name="label_12">
-                    <property name="styleSheet">
-                     <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
-                    </property>
-                    <property name="text">
-                     <string>Images :</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QWidget" name="widget_7" native="true"/>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tabGameInfo">
-         <attribute name="title">
-          <string>Tab 2</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <item>
-           <widget class="QWidget" name="w_torrent" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_6">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="styleSheet">
-                <string notr="true">max-height: 32px;
-font:26pt;</string>
-               </property>
-               <property name="text">
-                <string>Torrent</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="wTransmission" native="true"/>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="w_list_install" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <widget class="QWidget" name="widget_9" native="true">
-               <layout class="QVBoxLayout" name="verticalLayout_12">
+               <layout class="QVBoxLayout" name="verticalLayout">
                 <item>
-                 <widget class="QLabel" name="label_13">
+                 <widget class="QLabel" name="label_2">
                   <property name="styleSheet">
-                   <string notr="true">max-height: 32px;
-font:26pt;</string>
+                   <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
                   </property>
                   <property name="text">
-                   <string>WebSite</string>
+                   <string>Type :</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="comboBox_2">
-                  <item>
-                   <property name="text">
-                    <string>Site 1</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Site 2</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Site 3</string>
-                   </property>
-                  </item>
+                 <widget class="QListWidget" name="lwType">
+                  <property name="maximumSize">
+                   <size>
+                    <width>153</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border-left: 2px solid black;
+padding-left: 10px;</string>
+                  </property>
                  </widget>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_3">
-                  <item>
-                   <widget class="QPushButton" name="pushButton_3">
-                    <property name="text">
-                     <string>Add</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButton_2">
-                    <property name="text">
-                     <string>Delete</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
+                 <widget class="QPushButton" name="pbAddType">
+                  <property name="maximumSize">
+                   <size>
+                    <width>142</width>
+                    <height>35</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Add type</string>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string>Type</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QWidget" name="widget_3" native="true">
                <property name="styleSheet">
-                <string notr="true">max-height: 32px;
-font:26pt;</string>
+                <string notr="true">max-width: 600px;</string>
                </property>
-               <property name="text">
-                <string>Install</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="widget_2" native="true"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>PushButton</string>
-               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <item>
+                 <widget class="QLabel" name="label_14">
+                  <property name="styleSheet">
+                   <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';
+border:0;</string>
+                  </property>
+                  <property name="text">
+                   <string>Infos :</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QWidget" name="widget" native="true">
+                  <property name="styleSheet">
+                   <string notr="true">border:0;</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QLabel" name="label_8">
+                     <property name="maximumSize">
+                      <size>
+                       <width>600</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+font: 8pt;
+padding-top: 10px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Date d'installation :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lDate">
+                     <property name="maximumSize">
+                      <size>
+                       <width>625</width>
+                       <height>45</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+padding-left: 25px;
+font: 14pt  'Playfair Display', 'serif';
+font: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_9">
+                     <property name="maximumSize">
+                      <size>
+                       <width>600</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+font: 8pt;
+padding-top: 10px;</string>
+                     </property>
+                     <property name="text">
+                      <string>repertoir :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lDir">
+                     <property name="maximumSize">
+                      <size>
+                       <width>625</width>
+                       <height>45</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+padding-left: 25px;
+font: 14pt  'Playfair Display', 'serif';
+font: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_10">
+                     <property name="maximumSize">
+                      <size>
+                       <width>600</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+font: 8pt;
+padding-top: 10px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Chemin :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lPath">
+                     <property name="maximumSize">
+                      <size>
+                       <width>625</width>
+                       <height>45</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+padding-left: 25px;
+font: 14pt  'Playfair Display', 'serif';
+font: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_11">
+                     <property name="maximumSize">
+                      <size>
+                       <width>600</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+font: 8pt;
+padding-top: 10px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Taille du dossier :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lSizeFolder">
+                     <property name="maximumSize">
+                      <size>
+                       <width>625</width>
+                       <height>45</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">border: 0px;
+padding-left: 25px;
+font: 14pt  'Playfair Display', 'serif';
+font: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>Page</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_8"/>
-        </widget>
-       </widget>
-      </item>
-     </layout>
+           </item>
+          </layout>
+          <zorder>lCouverturel</zorder>
+          <zorder>lName</zorder>
+          <zorder>leDesc</zorder>
+          <zorder></zorder>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_6" native="true">
+          <property name="styleSheet">
+           <string notr="true">max-width: 400px;
+</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="styleSheet">
+              <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
+             </property>
+             <property name="text">
+              <string>Images :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="layouListScreen"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QWidget" name="widget_8" native="true">
+          <property name="styleSheet">
+           <string notr="true">min-width: 300px;</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_14">
+           <item>
+            <widget class="QLabel" name="lNameInstall">
+             <property name="styleSheet">
+              <string notr="true">font: 36pt 'Brush Script MT', 'cursive';</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lFolderInstall">
+             <property name="styleSheet">
+              <string notr="true">font: 16pt  'Playfair Display', 'serif';</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="textEdit"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_10" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QLabel" name="lSizeInstall">
+             <property name="styleSheet">
+              <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="cbInstall">
+             <property name="styleSheet">
+              <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';
+</string>
+             </property>
+             <property name="text">
+              <string>Install</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="text">
+              <string>Install</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -751,7 +726,7 @@ font:26pt;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">

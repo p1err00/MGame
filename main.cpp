@@ -7,6 +7,7 @@
 #include <QCoreApplication>
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
+#include <QDesktopWidget>
 
 int main(int argc, char *argv[])
 {
@@ -43,7 +44,11 @@ int main(int argc, char *argv[])
     w.loadFavList();
     w.loadTransmission();
 
-    //w.setWindowState(Qt::WindowFullScreen);
+    w.setWindowState(Qt::WindowMaximized);
+    int widthScreen = QApplication::desktop()->width();
+    int heighScreen = QApplication::desktop()->height();
+    w.setFixedSize(widthScreen, heighScreen);
+
     w.show();
     return a.exec();
 }

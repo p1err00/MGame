@@ -21,6 +21,10 @@ public:
     //SettingsDialog();
 
     void displayGame(Game *game);
+
+    QString linkPicture = "";
+    QString linkCouverture = "";
+    QList<QString> type;
 private slots:
 
 
@@ -29,6 +33,8 @@ private:
 
     QString name;
     QList<QString> listType;
+
+    void fillType(QList<QString> list);
 
 public slots:
     Game on_buttonBox_accepted();
