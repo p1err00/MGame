@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QCheckBox>
 #include <QDebug>
+#include <QMessageBox>
 
 AddDialog::AddDialog(QWidget *parent) :
     QDialog(parent),
@@ -45,7 +46,6 @@ AddDialog::AddDialog(QWidget *parent) :
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "not file";
-        return;
     }
     QTextStream stream(&file);
     QString line;
@@ -76,8 +76,6 @@ QMap<QString, QString> AddDialog::on_pbOpen_clicked()
         d = p.section("/",0,-2);
         n = p.section("/", -1).toUtf8();
 
-        //d.replace(" ", "\\ ");
-
         da = QDateTime::currentDateTime();
 
         QMap<QString, QString> keys;
@@ -88,6 +86,7 @@ QMap<QString, QString> AddDialog::on_pbOpen_clicked()
         ui->ldirectory->setText(d);
         ui->lpath->setText(p);
         ui->ldate->setText(da.toString());
+        ui->leName->setText(n);
 
         return keys;
 }
@@ -100,27 +99,31 @@ QString AddDialog::on_teDesc_textChanged()
     return dataText;
 }
 
-Game AddDialog::on_buttonBox_accepted()
+void AddDialog::on_buttonBox_accepted()
 {
-    QString desc = on_teDesc_textChanged();
+    if(!n.isEmpty()){
+        QString desc = on_teDesc_textChanged();
 
-    for(int i = 0; i < ui->lwListType->count(); i++){
-        if(ui->lwListType->item(i)->checkState() == Qt::Checked){
-            l.append(ui->lwListType->item(i)->text());
+        for(int i = 0; i < ui->lwListType->count(); i++){
+            if(ui->lwListType->item(i)->checkState() == Qt::Checked){
+                l.append(ui->lwListType->item(i)->text());
+            }
         }
+
+        game = new Game(n,d,p, QDateTime::currentDateTime().toString("dd.MM.yyyy hh.mm"), desc, l);
+
+        MainWindow *mw = new MainWindow;
+
+        mw->listGame.append(game);
+
+        qDebug()<< "Save game \n";
+        mw->saveGame(game);
+
+        qDebug()<< "Game loading";
+        mw->loadgameFromFile();
+    } else {
+        QMessageBox::warning(this, "Warning", "No game selected");
     }
 
-    Game *game = new Game(n,d,p, QDateTime::currentDateTime().toString("dd.MM.yyyy hh.mm"), desc, l);
-
-    MainWindow *mw = new MainWindow;
-
-    mw->listGame.append(game);
-
-    qDebug()<< "Save game \n";
-    mw->saveGame(game);
-
-    qDebug()<< "Game loading";
-    mw->loadgameFromFile();
-    return *game;
 }
 

@@ -4,8 +4,6 @@
 #include "Game.h"
 #include "AddDialog.h"
 #include "Settings/Settings.h"
-#include "GameInstall/GameInstall.h"
-
 
 #include <QMainWindow>
 #include <QLineEdit>
@@ -43,8 +41,6 @@ public:
 
     void loadgameFromFile();
 
-    void loadGameInstallFromFile();
-
     Game *selectGame;
 
     QDateTime oStartTime;
@@ -54,14 +50,20 @@ public:
     QFile file;
     QList<QString> favList;
 
-    QList<GameInstall*> listGameInstall;
+    QShortcut *space;
 
     void loadTransmission();
+
+    int screenShotCounter = 0;
+
+    static void launchGame(Game *game);
+
+    static void takeScreen();
 
 
 private slots:
 
-    void on_pbAdd_clicked();
+    static void on_pbAdd_clicked();
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
@@ -74,10 +76,6 @@ private slots:
     void on_comboBox_activated(const QString &arg1);
 
     void on_actionParametre_triggered();
-
-    void on_lwGameInstall_itemClicked(QListWidgetItem *item);
-
-    void on_lwGameInstall_customContextMenuRequested(const QPoint &pos);
 
     void on_pbChangeImage_clicked();
 
@@ -96,7 +94,6 @@ private:
 
     QMenu *listMenu = new QMenu;
     QMenu *itemMenu = new QMenu;
-    QMenu *itemInstallMenu = new QMenu;
     QMenu *couvertureMenu = new QMenu;
 
     QAction *action_itemAdd_listMenu = new QAction("Add");
@@ -106,11 +103,6 @@ private:
     QAction *action_itemFavori_itemMenu = new QAction("Favori");
     QAction *action_itemProperty_itemMenu = new QAction("Property");
 
-    QAction *action_itemAdd_itemInstallMenu = new QAction("Add");
-    QAction *action_itemDel_itemInstallMenu = new QAction("Delete");
-    QAction *action_itemReload_itemInstallMenu = new QAction("Reload");
-    QAction *action_itemAddList_itemInstallMenu = new QAction("Ajouté à \"Installer rapidement\"");
-
     QAction *action_itemChange_couvertureMenu = new QAction("Changer");
 
     qint64 dirSize(QString dirPath);
@@ -119,7 +111,7 @@ private:
 
     void reloadGame();
 
-    quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
+    static quint64 calculateTime(QDateTime startProcess, QDateTime stopProcess);
 
     void closeEvent (QCloseEvent *event);
 
@@ -128,8 +120,6 @@ private:
 public slots:
 
     void loadList();
-
-    void loadListGameInstall();
 
     //void displayGame(Game *game);
 

@@ -24,13 +24,14 @@ public:
     QString d;
     QDateTime da;
     QList<QString> l;
+    Game *game;
 
 private slots:
     QMap<QString, QString> on_pbOpen_clicked();
 
     QString on_teDesc_textChanged();
 
-    Game on_buttonBox_accepted();
+    void on_buttonBox_accepted();
 
 private:
     Ui::AddDialog *ui;

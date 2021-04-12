@@ -20,10 +20,7 @@ SOURCES += \
     Dialog/ChangeCouvertureDIalog.cpp \
     Dialog/SelectTypeDialog.cpp \
     Game.cpp \
-    GameInstall/AddGameInstallDialog.cpp \
-    GameInstall/GameInstall.cpp \
-    GameInstall/GameInstallManager.cpp \
-    MyThread.cpp \
+    Screenshot/Screenshot.cpp \
     Settings/FavoriDialog.cpp \
     Settings/MainSettingsDialog.cpp \
     Settings/PreferenceSettingsDialog.cpp \
@@ -32,7 +29,6 @@ SOURCES += \
     Torrent/Torrent.cpp \
     Torrent/TorrentFile.cpp \
     TransmissionProcess.cpp \
-    WorkerThread.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -41,11 +37,8 @@ HEADERS += \
     Dialog/ChangeCouvertureDIalog.h \
     Dialog/SelectTypeDialog.h \
     Game.h \
-    GameInstall/AddGameInstallDialog.h \
-    GameInstall/GameInstall.h \
-    GameInstall/GameInstallManager.h \
     MainWindow.h \
-    MyThread.h \
+    Screenshot/Screenshot.h \
     Settings/FavoriDialog.h \
     Settings/MainSettingsDialog.h \
     Settings/PreferenceSettingsDialog.h \
@@ -53,14 +46,12 @@ HEADERS += \
     Settings/SettingsDialog.h \
     Torrent/Torrent.h \
     Torrent/TorrentFile.h \
-    TransmissionProcess.h \
-    WorkerThread.h
+    TransmissionProcess.h
 
 FORMS += \
     AddDialog.ui \
     Dialog/ChangeCouvertureDIalog.ui \
     Dialog/SelectTypeDialog.ui \
-    GameInstall/AddGameInstallDialog.ui \
     MainWindow.ui \
     Settings/MainSettingsDialog.ui \
     Settings/PreferenceSettingsDialog.ui \

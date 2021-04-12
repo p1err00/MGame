@@ -158,12 +158,12 @@ void Game::setLinkCouverture(QString linkCouverture){
 }
 void Game::fromJson(QJsonObject json){
 
-    this->setName(json.value("name").toString());
-    this->setDirectory(json.value("directory").toString());
-    this->setDate(json.value("date").toString());
-    this->setPath(json.value("path").toString());
+    this->setName(json.value("name").toString().toUtf8());
+    this->setDirectory(json.value("directory").toString().toUtf8());
+    this->setDate(json.value("date").toString().toUtf8());
+    this->setPath(json.value("path").toString().toUtf8());
     this->setDateLastUse(json.value("dateLastUse").toString());
-    this->setDesc(json.value("desc").toString());
+    this->setDesc(json.value("desc").toString().toUtf8());
     this->setTimePlayed(json.value("timePlayed").toInt());
     this->setLinkPicture(json.value("linkPicture").toString());
     this->setLinkCouverture(json.value("linkCouverture").toString());

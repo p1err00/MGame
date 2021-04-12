@@ -1,17 +1,14 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "AddDialog.h"
-#include "MyThread.h"
 #include "Game.h"
 #include "Dialog/SelectTypeDialog.h"
 #include "Settings/SettingsDialog.h"
 #include "Settings/FavoriDialog.h"
-#include "WorkerThread.h"
 #include "TransmissionProcess.h"
 #include "Settings/MainSettingsDialog.h"
-#include "GameInstall/AddGameInstallDialog.h"
-#include "GameInstall/GameInstallManager.h"
 #include "Dialog/ChangeCouvertureDIalog.h"
+#include "Screenshot/Screenshot.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -42,6 +39,8 @@
 #include <QtConcurrent/QtConcurrent>
 #include <QStyle>
 #include <QPixmap>
+#include <QShortcut>
+#include <QScreen>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -59,13 +58,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(wid, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_listWidget_customContextMenuRequested(const QPoint&)));
 
     loadgameFromFile();
+
     int count = 0;
     for(int i = 0; i < listGame.count(); i++){
         count++;
     }
     ui->lNumbergame->setText(QString::number(count));
-
-    loadListGameInstall();
 
     listMenu->setTitle("Tableau");
     listMenu->addAction(action_itemAdd_listMenu);
@@ -76,27 +74,64 @@ MainWindow::MainWindow(QWidget *parent)
     itemMenu->addAction(action_itemFavori_itemMenu);
     itemMenu->addAction(action_itemProperty_itemMenu);
 
-    itemInstallMenu->setTitle("Install");
-    itemInstallMenu->addAction(action_itemAdd_itemInstallMenu);
-    itemInstallMenu->addAction(action_itemReload_itemInstallMenu);
-    itemInstallMenu->addAction(action_itemAddList_itemInstallMenu);
-    itemInstallMenu->addAction(action_itemDel_itemInstallMenu);
-
     couvertureMenu->addAction(action_itemChange_couvertureMenu);
 
     listMenu->addMenu(itemMenu);
 
-    QWidget *wid2;
-    wid2 = ui->lwGameInstall;
-    wid2->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(wid2, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lwGameInstall_customContextMenuRequested(const QPoint&)));
-
     QWidget *wid3;
     wid3 = ui->lCouverturel;
     wid3->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(wid2, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lCouverturel_customContextMenuRequested(const QPoint &pos)));
+    connect(wid3, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lCouverturel_customContextMenuRequested(const QPoint &pos)));
 
+    //Shortcut
 
+    space = new QShortcut(this);
+    space->setKey(Qt::Key_Space);
+
+    QObject::connect(space, &QShortcut::activated, this,[=]{
+        qDebug() << "Shoot screen";
+
+        QScreen *screen = QGuiApplication::primaryScreen();
+
+        QPixmap originalPixmap = screen->grabWindow(QApplication::desktop()->hasFocus());
+        quint64 random = QRandomGenerator::global()->generate();
+        originalPixmap.save(QDir::currentPath()+"\\Screenshot\\"+QString::number(random)+".png");
+    });
+
+    //Set example picture
+    QString aze = "C:\\Users\\p1err0\\Documents\\build-Project-Desktop_Qt_5_12_6_MSVC2015_64bit-Debug\\debug\\img\\cyberpunk.jpg";
+    for(int i = 0; i < 5; i++){
+        QPixmap *pixi = new QPixmap(aze);
+        QLabel *l = new QLabel;
+        l->setPixmap(*pixi);
+        ui->layouListScreen->addWidget(l);
+    }
+
+    //Set stylesheet menu
+    listMenu->setStyleSheet("QMenu {"
+                            "background-color: #777777;"
+                            "min-width: 75px"
+                            "}"
+                            "QMenu::item:selected {"
+                            "background-color: #ff4f4f;"
+                            "border: 1px solid red;"
+                            "}");
+    itemMenu->setStyleSheet("QMenu {"
+                            "background-color: #777777;"
+                            "min-width: 75px"
+                            "}"
+                            "QMenu::item:selected {"
+                            "background-color: #ff4f4f;"
+                            "min-height: 25px;"
+                            "}");
+    couvertureMenu->setStyleSheet("QMenu {"
+                            "background-color: #777777;"
+                            "min-width: 75px"
+                            "}"
+                            "QMenu::item:selected {"
+                            "background-color: #ff4f4f;"
+                            "min-height: 25px;"
+                            "}");
 }
 
 MainWindow::~MainWindow()
@@ -262,47 +297,12 @@ void MainWindow::loadList(){
     loadFavList();
 }
 
-void MainWindow::loadGameInstallFromFile(){
-
-    QFile file("saveGameInstall.json");
-
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    QTextStream stream(&file);
-    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
-    file.close();
-
-    for(QJsonValue value : jsonArray){
-        if(!value.isObject())
-            continue;
-        GameInstall *gameInstall = new GameInstall();
-
-        gameInstall->fromJson(value.toObject());
-
-        listGameInstall.append(gameInstall);
-    }
-}
-
-void MainWindow::loadListGameInstall(){
-
-    listGameInstall.clear();
-    loadGameInstallFromFile();
-
-    ui->lwGameInstall->clear();
-    QListWidgetItem *it;
-    for(GameInstall *gameInstall : listGameInstall){
-        it = new QListWidgetItem(gameInstall->name());
-        ui->lwGameInstall->addItem(it);
-    }
-    ui->lwGameInstall->sortItems();
-
-}
-
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
 
     QFile file("save.json");
+    QPixmap *pixPicture;
+    QPixmap *pixCouverture;
 
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
@@ -310,6 +310,9 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
     QTextStream stream(&file);
     QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
     file.close();
+
+    ui->lImage->clear();
+    ui->lCouverturel->clear();
 
     for(auto object : jsonArray){
         if(!object.isObject())
@@ -335,10 +338,10 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             qint64 size = dirSize(directoryPath);
 
             //File tabInfoUser
-            ui->lLastUse->setText(object.toObject().value("dateLastUse").toString());
-            ui->lName->setText(object.toObject().value("name").toString());
+            ui->lLastUse->setText(object.toObject().value("dateLastUse").toString().toUtf8());
+            ui->lName->setText(object.toObject().value("name").toString().toUtf8());
             ui->leDesc->setWordWrap(1);
-            ui->leDesc->setText(object.toObject().value("desc").toString());
+            ui->leDesc->setText(object.toObject().value("desc").toString().toUtf8());
 
             ui->lTimePlayed->setText(QString::number(hour) + ":" + QString::number(min) + ":" + QString::number(sec));
             if(object.toObject().value("dateLastUse").toString() == "")
@@ -347,8 +350,8 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 ui->lLastUse->setText(object.toObject().value("dateLastUse").toString());
 
             ui->lDate->setText(object.toObject().value("date").toString());
-            ui->lDir->setText(object.toObject().value("directory").toString());
-            ui->lPath->setText(object.toObject().value("path").toString());
+            ui->lDir->setText(object.toObject().value("directory").toString().toUtf8());
+            ui->lPath->setText(object.toObject().value("path").toString().toUtf8());
             ui->lPath->setWordWrap(1);
             ui->lwType->clear();
             QListWidgetItem *it;
@@ -357,22 +360,15 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
                 ui->lwType->addItem(it);
             }
             ui->lSizeFolder->setText(formatSize(size));
-            QPixmap *pixPicture = new QPixmap(object.toObject().value("linkPicture").toString());
+
+            pixPicture = new QPixmap(object.toObject().value("linkPicture").toString());
             *pixPicture = pixPicture->scaled(ui->lImage->size(), Qt::KeepAspectRatio);
             ui->lImage->setPixmap(*pixPicture);
 
-            QPixmap *pixCouverture = new QPixmap(object.toObject().value("linkCouverture").toString());
+            pixCouverture = new QPixmap(object.toObject().value("linkCouverture").toString());
             *pixCouverture = pixCouverture->scaled(ui->lCouverturel->size(), Qt::KeepAspectRatio);
             ui->lCouverturel->setPixmap(*pixCouverture);
 
-            //Set image
-            QString aze = "C:/Users/p1err0/Documents/build-Project-Desktop_Qt_5_12_6_MSVC2015_64bit-Debug/debug/img/cyberpunk.jpg";
-            for(int i = 0; i < 5; i++){
-                QPixmap *pixi = new QPixmap;
-                QLabel *l = new QLabel;
-                l->setPixmap(*pixi);
-                ui->layouListScreen->addWidget(l);
-            }
             //Set the current game
 
             for(auto game : listGame){
@@ -382,98 +378,71 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
             }
         }
     }
-    ui->stackedWidget->setCurrentIndex(0);
-}
-
-void MainWindow::on_lwGameInstall_itemClicked(QListWidgetItem *item)
-{
-    ui->stackedWidget->setCurrentIndex(1);
-
-    QFile file("saveGameInstall.json");
-
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    QTextStream stream(&file);
-    QJsonArray jsonArray = QJsonDocument::fromJson(stream.readAll().toUtf8()).array();
-    file.close();
-
-    for(auto object : jsonArray){
-        if(!object.isObject())
-            continue;
-
-        if(item->text() == object.toObject().value("name").toString()){
-            ui->lNameInstall->setText(object.toObject().value("name").toString());
-            ui->lFolderInstall->setText(object.toObject().value("folder").toString());
-            ui->lSizeInstall->setNum(object.toObject().value("size").toInt());
-
-            if(object.toObject().value("install").toBool()){
-                ui->cbInstall->setCheckState(Qt::CheckState(true));
-            } else {
-                ui->cbInstall->setCheckState(Qt::CheckState(false));
-            }
-        }
-    }
 }
 
 void MainWindow::on_pbLaunch_clicked()
 {
-    qDebug() << "Launch";
 
     if(!selectGame)
         return;
-
-    QString program =  selectGame->path();
-    QStringList arguments;
-    QString workingDirectory = selectGame->directory();
-
-    QProcess *process = new QProcess();
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
+    QFuture<void> future = QtConcurrent::run(&MainWindow::launchGame, selectGame);
+    QDateTime startProcess = QDateTime::currentDateTime();
+    qDebug() << "Launch";
 
 
-    arguments << "start /c " << selectGame->path().section("/", -1);
 
-    qDebug() << arguments;
+    QObject::connect(watcher, &QFutureWatcher<void>::finished, [=](){
 
-    MyThread *thread = new MyThread;
-
-    QDateTime startProcess =QDateTime::currentDateTime();
-
-    process->execute(program, arguments);
-    process->moveToThread(thread);
-
-    thread->start();
-
-    connect(thread, &QThread::finished, [=](){
         qDebug() << "Go to save time";
+        qDebug() << startProcess;
 
         QDateTime stopProcess = QDateTime::currentDateTime();
 
         quint64 timeDiff = calculateTime(startProcess, stopProcess);
 
+        qDebug() << timeDiff;
+
         QDate value = QDate::currentDate();
 
-        //int timePlayed = json.value("timePlayed").toInt();
-        //timePlayed += timeDiff;
-
-        Game *game = selectGame;
-        game->setTimePlayed(selectGame->timePlayed() + timeDiff);
-        game->setDateLastUse(value.toString());
+        Game *n_game = selectGame;
+        n_game->setTimePlayed(selectGame->timePlayed() + timeDiff);
+        n_game->setDateLastUse(value.toString());
         QList<QString> list;
-        for(int i = 0; i < ui->lwType->count(); i++){
-
-            list.append(ui->lwType->item(i)->text());
-
+        for(auto i :  selectGame->types()){
+            list.append(i);
         }
-        game->setTypes(list);
+        n_game->setTypes(list);
 
         reloadGame();
-        saveGame(selectGame);
+        saveGame(n_game);
         loadgameFromFile();
         loadList();
     });
 
-    //connect(thread, SIGNAL(finished()), this, SLOT(deleteLater()));
+    watcher->setFuture(future);
+}
 
+void MainWindow::takeScreen(){
+    qDebug() << "Screen Mes couilles";
+    Screenshot *sc = new Screenshot("C:\\Users\p1err0\\Documents\\build-Project-Desktop_Qt_5_12_6_MSVC2015_64bit-Debug\\Screenshot", "screen");
+    sc->shootScreen();
+    //screenShotCounter++;
+}
+
+void MainWindow::launchGame(Game *game){
+
+    QString program =  game->path();
+    QStringList arguments;
+    QString workingDirectory = game->directory();
+
+    QProcess *process = new QProcess();
+
+    arguments << "start /c " << game->path().section("/", -1);
+
+    QDateTime startProcess =QDateTime::currentDateTime();
+
+    process->execute(program, arguments);
 }
 
 //Calculate difference between start and stop time program
@@ -485,8 +454,6 @@ quint64 MainWindow::calculateTime(QDateTime startProcess, QDateTime stopProcess)
     difference  *= static_cast<quint64>(60); // minutes to seconds
     difference  *= static_cast<quint64>(1000); // seconds to milliseconds
     difference += qAbs(startProcess.time().msecsTo(stopProcess .time()));
-
-    qDebug() << difference;
     return difference;
 }
 
@@ -501,21 +468,28 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
 
     selectedAction = listMenu->exec(globalpos);
 
-    if(!pointedItem)
-        action_itemDel_itemMenu->setEnabled(false);
 
     if(selectedAction == action_itemAdd_listMenu) {
         AddDialog *addDialog = new AddDialog;
-        addDialog->show();
-        return;
+        addDialog->exec();
     }
 
     if(selectedAction == action_itemReload_listMenu){
         loadList();
-        return;
     }
 
     if(selectedAction == action_itemProperty_itemMenu) {
+
+        if(!pointedItem)
+            return;
+
+        for(auto i : listGame){
+            if(i->name() == pointedItem->text()){
+                selectGame = i;
+            }
+        }
+
+
         Game *game;
         SettingsDialog *st = new SettingsDialog();
         st->displayGame(selectGame);
@@ -528,10 +502,13 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
         on_pbDel_clicked();
         loadgameFromFile();
         loadList();
-        return;
     }
 
     if(selectedAction == action_itemFavori_itemMenu){
+
+        if(!pointedItem)
+            return;
+
         FavoriDialog *fd = new FavoriDialog;
         if(pointedItem->icon().isNull()){
 
@@ -544,10 +521,13 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
             pointedItem->setIcon(QIcon());
             qDebug() << favList;
         }
-        return;
     }
 
     if(selectedAction == action_itemDel_itemMenu) {
+
+        if(!pointedItem)
+            return;
+
         auto item = ui->listWidget->itemAt(pos);
         for(auto itemG : listGame){
             if(item->text() == itemG->name()){
@@ -558,11 +538,11 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
         }
         reloadGame();
         loadList();
-        return;
     }
 
     action_itemDel_itemMenu->setEnabled(true);
-    return;
+    action_itemFavori_itemMenu->setEnabled(true);
+    action_itemProperty_itemMenu->setEnabled(true);
 }
 //Calculate and convert size of folder
 qint64 MainWindow::dirSize(QString dirPath) {
@@ -690,36 +670,6 @@ void MainWindow::saveFavori(){
     QTextStream stream(&file);
     stream << QJsonDocument(jsonArray).toJson();
     file.close();
-}
-
-void MainWindow::on_lwGameInstall_customContextMenuRequested(const QPoint &pos)
-{
-    qDebug() << "ca rentre";
-    QPoint globalpos = ui->lwGameInstall->mapToGlobal(pos);
-
-    QListWidgetItem* pointedItem = ui->lwGameInstall->itemAt(pos);
-
-    QAction* selectedAction;
-
-    selectedAction = itemInstallMenu->exec(globalpos);
-
-    if(!pointedItem){
-        action_itemDel_itemInstallMenu->setEnabled(false);
-        action_itemAddList_itemInstallMenu->setEnabled(false);
-    }
-    if(selectedAction == action_itemAdd_itemInstallMenu){
-        AddGameInstallDialog *ad = new AddGameInstallDialog;
-        ad->show();
-    }
-
-    if(selectedAction == action_itemReload_itemInstallMenu){
-        qDebug() << "Reload";
-       loadListGameInstall();
-    }
-
-    action_itemDel_itemInstallMenu->setEnabled(true);
-    action_itemAddList_itemInstallMenu->setEnabled(true);
-
 }
 
 void MainWindow::on_pbChangeImage_clicked()

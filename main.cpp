@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
 
     //Set stylesheet
-    QFile file("css/Darkeum.qss");
+    QFile file("css/SyNet.qss");
     if(!file.open(QFile::ReadOnly))
         qDebug() << "pas trouver";
     file.open(QFile::ReadOnly);
