@@ -76,12 +76,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     couvertureMenu->addAction(action_itemChange_couvertureMenu);
 
+    typeMenu->addAction(action_openList_typeMenu);
+
     listMenu->addMenu(itemMenu);
 
     QWidget *wid3;
     wid3 = ui->lCouverturel;
     wid3->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(wid3, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lCouverturel_customContextMenuRequested(const QPoint &pos)));
+
+    QWidget *wid4;
+    wid4 = ui->lwType;
+    wid4->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(wid4, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_lwType_customContextMenuRequested(const QPoint &pos)));
 
     //Shortcut
 
@@ -104,6 +111,9 @@ MainWindow::MainWindow(QWidget *parent)
         QPixmap *pixi = new QPixmap(aze);
         QLabel *l = new QLabel;
         l->setPixmap(*pixi);
+        l->setStyleSheet("QLabel {"
+                         "border: 0;"
+                         "}");
         ui->layouListScreen->addWidget(l);
     }
 
@@ -132,6 +142,15 @@ MainWindow::MainWindow(QWidget *parent)
                             "background-color: #ff4f4f;"
                             "min-height: 25px;"
                             "}");
+    typeMenu->setStyleSheet("QMenu {"
+                            "background-color: #777777;"
+                            "min-width: 75px"
+                            "}"
+                            "QMenu::item:selected {"
+                            "background-color: #ff4f4f;"
+                            "min-height: 25px;"
+                            "}");
+
 }
 
 MainWindow::~MainWindow()
@@ -488,17 +507,14 @@ void MainWindow::on_listWidget_customContextMenuRequested(const QPoint &pos)
                 selectGame = i;
             }
         }
-
-
-        Game *game;
+        QList<QString> list = selectGame->types();
         SettingsDialog *st = new SettingsDialog();
         st->displayGame(selectGame);
         st->exec();
-        *selectGame = st->on_buttonBox_accepted();
-        qDebug() << selectGame->name();
-        game = selectGame;
+        selectGame = st->n_game;
+        selectGame->setTypes(list);
         reloadGame();
-        saveGame(game);
+        saveGame(selectGame);
         on_pbDel_clicked();
         loadgameFromFile();
         loadList();
@@ -572,26 +588,7 @@ QString MainWindow::formatSize(qint64 size) {
     return QString("%0 %1").arg(outputSize, 0, 'f', 2).arg(units[i]);
 }
 
-void MainWindow::on_pbAddType_clicked()
-{
-    SelectTypeDialog *st = new SelectTypeDialog;
-    QList<QString> list;
-    st->exec();
 
-    if(st->listType.isEmpty())
-        return;
-
-    for(auto i : st->listType)
-        list.append(i);
-
-    //Change type
-    Game *game = selectGame;
-    game->setTypes(list);
-    reloadGame();
-    saveGame(game);
-    loadgameFromFile();
-    loadList();
-}
 
 void MainWindow::saveDescGame(){
 
@@ -732,6 +729,34 @@ void MainWindow::on_lCouverturel_customContextMenuRequested(const QPoint &pos)
         game->setLinkCouverture(file.absoluteFilePath());
         reloadGame();
 
+        saveGame(game);
+        loadgameFromFile();
+        loadList();
+    }
+}
+
+void MainWindow::on_lwType_customContextMenuRequested(const QPoint &pos)
+{
+    QPoint globalpos = ui->lwType->mapToGlobal(pos);
+
+    QAction* selectedAction;
+    selectedAction = typeMenu->exec(globalpos);
+
+    if(selectedAction == action_openList_typeMenu){
+        SelectTypeDialog *st = new SelectTypeDialog;
+        QList<QString> list;
+        st->exec();
+
+        if(st->listType.isEmpty())
+            return;
+
+        for(auto i : st->listType)
+            list.append(i);
+
+        //Change type
+        Game *game = selectGame;
+        game->setTypes(list);
+        reloadGame();
         saveGame(game);
         loadgameFromFile();
         loadList();

@@ -36,12 +36,9 @@
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <layout class="QVBoxLayout" name="layoutInfo">
              <item>
               <widget class="QLineEdit" name="leName"/>
-             </item>
-             <item>
-              <widget class="QListWidget" name="lwListType"/>
              </item>
             </layout>
            </item>

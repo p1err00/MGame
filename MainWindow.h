@@ -71,8 +71,6 @@ private slots:
 
     void on_listWidget_customContextMenuRequested(const QPoint &pos);
 
-    void on_pbAddType_clicked();
-
     void on_comboBox_activated(const QString &arg1);
 
     void on_actionParametre_triggered();
@@ -80,6 +78,8 @@ private slots:
     void on_pbChangeImage_clicked();
 
     void on_lCouverturel_customContextMenuRequested(const QPoint &pos);
+
+    void on_lwType_customContextMenuRequested(const QPoint &pos);
 
 private:
 
@@ -95,6 +95,7 @@ private:
     QMenu *listMenu = new QMenu;
     QMenu *itemMenu = new QMenu;
     QMenu *couvertureMenu = new QMenu;
+    QMenu * typeMenu = new QMenu;
 
     QAction *action_itemAdd_listMenu = new QAction("Add");
     QAction *action_itemReload_listMenu = new QAction("Reload");
@@ -104,6 +105,8 @@ private:
     QAction *action_itemProperty_itemMenu = new QAction("Property");
 
     QAction *action_itemChange_couvertureMenu = new QAction("Changer");
+
+    QAction *action_openList_typeMenu = new QAction("Change");
 
     qint64 dirSize(QString dirPath);
 

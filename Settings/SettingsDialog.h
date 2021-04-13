@@ -25,6 +25,10 @@ public:
     QString linkPicture = "";
     QString linkCouverture = "";
     QList<QString> type;
+    int timePlayed;
+    QString dateLastUse;
+
+    Game *n_game;
 private slots:
 
 

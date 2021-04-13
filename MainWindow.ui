@@ -137,7 +137,7 @@ padding: 10px;</string>
          <property name="styleSheet">
           <string notr="true">min-width: 150px;
 min-height:150px;
-border: 4px dashed #575757;</string>
+</string>
          </property>
          <property name="text">
           <string/>
@@ -177,7 +177,7 @@ font: 12pt  'Playfair Display', 'serif';
 font: italic;</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Never used</string>
          </property>
         </widget>
        </item>
@@ -263,8 +263,7 @@ font: italic;</string>
         <widget class="QLabel" name="lCouverturel">
          <property name="styleSheet">
           <string notr="true">min-height: 300px;
-min-width: 600px;
-border: 4px dashed #575757;</string>
+min-width: 600px;</string>
          </property>
          <property name="text">
           <string/>
@@ -328,25 +327,6 @@ heigh:500px;</string>
               <property name="styleSheet">
                <string notr="true">border-left: 2px solid black;
 padding-left: 10px;</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pbAddType">
-              <property name="maximumSize">
-               <size>
-                <width>142</width>
-                <height>35</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Add type</string>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Type</string>
               </property>
              </widget>
             </item>
@@ -427,7 +407,7 @@ font: 8pt;
 padding-top: 10px;</string>
                  </property>
                  <property name="text">
-                  <string>repertoir :</string>
+                  <string>Repertoir :</string>
                  </property>
                 </widget>
                </item>
@@ -554,17 +534,23 @@ font: italic;</string>
     </item>
     <item>
      <widget class="QWidget" name="widget_6" native="true">
+      <property name="maximumSize">
+       <size>
+        <width>334</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="styleSheet">
-       <string notr="true">max-width: 400px;
-max-height:600px;
-margin-top: 0;
-</string>
+       <string notr="true">max-width: 300px;
+border-left: 4px solid black;
+padding-left: 30px;</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
         <widget class="QLabel" name="label_12">
          <property name="styleSheet">
-          <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';</string>
+          <string notr="true">font: 16pt 'Nunito Sans', 'sans-serif';
+border: 0;</string>
          </property>
          <property name="text">
           <string>Images :</string>
@@ -572,7 +558,18 @@ margin-top: 0;
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="layouListScreen"/>
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="styleSheet">
+          <string notr="true">border: 0;
+max-width: 200px;
+max-height: 800px;</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QVBoxLayout" name="layouListScreen"/>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
