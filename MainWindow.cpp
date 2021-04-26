@@ -310,6 +310,7 @@ void MainWindow::loadList(){
     QListWidgetItem *it;
     for(Game *item : listGame){
         it = new QListWidgetItem(item->name());
+
         ui->listWidget->addItem(it);
     }
     ui->listWidget->sortItems();

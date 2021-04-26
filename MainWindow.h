@@ -18,6 +18,7 @@
 #include <QListWidgetItem>
 #include <QAction>
 #include <QMenu>
+#include <QShortcut>
 
 
 QT_BEGIN_NAMESPACE
